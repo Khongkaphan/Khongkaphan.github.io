@@ -1,0 +1,468 @@
+import { test, expect } from "@playwright/test";
+
+const developmentURL = "http://127.0.0.1:4174/";
+const sectionIds = [
+  "home",
+  "about",
+  "skills",
+  "education",
+  "projects",
+  "contact"
+];
+
+async function expectProjectImagesToDecode(page) {
+  const imageResults = await page.locator(
+    'img[src="/assets/avatar.jpg"], img[src="/assets/projects/stockflow-dashboard.png"]'
+  ).evaluateAll(async (images) =>
+    Promise.all(images.map(async (image) => {
+      await image.decode();
+      return {
+        complete: image.complete,
+        naturalWidth: image.naturalWidth,
+        naturalHeight: image.naturalHeight
+      };
+    }))
+  );
+
+  expect(imageResults).toHaveLength(2);
+  for (const image of imageResults) {
+    expect(image.complete).toBe(true);
+    expect(image.naturalWidth).toBeGreaterThan(0);
+    expect(image.naturalHeight).toBeGreaterThan(0);
+  }
+}
+
+test("renders the Thai portfolio with approved sections", async ({ page }) => {
+  await page.goto("/");
+
+  await expect(page).toHaveTitle(/Khongkaphan/);
+  await expect(page.locator('script[type="module"]')).toHaveAttribute(
+    "src",
+    /^\/assets\/index-[A-Za-z0-9_-]+\.js$/
+  );
+  await expect(
+    page.getByRole("heading", { level: 1, name: "Khongkaphan Kiawsod" })
+  ).toBeVisible();
+  await expect(page.getByText("Software Developer Intern")).toBeVisible();
+  await expect(page.getByRole("navigation")).toBeVisible();
+
+  for (const heading of [
+    "เกี่ยวกับฉัน",
+    "ทักษะ",
+    "การศึกษา",
+    "ผลงาน",
+    "ติดต่อ"
+  ]) {
+    await expect(page.getByRole("heading", { name: heading })).toBeVisible();
+  }
+});
+
+test("production project images keep decoding across navigations", async ({ page }) => {
+  await page.goto("/");
+  await expect(page.getByRole("img", { name: "Khongkaphan Kiawsod" }))
+    .toHaveAttribute("src", /assets\/avatar\.jpg$/);
+  await expect(page.getByRole("img", { name: /Dashboard.*StockFlow|StockFlow.*Dashboard/ }))
+    .toHaveAttribute("src", /stockflow-dashboard\.png$/);
+  await expectProjectImagesToDecode(page);
+
+  await page.reload();
+  await expectProjectImagesToDecode(page);
+});
+
+test("uses the owner-confirmed email contact", async ({ page }) => {
+  await page.goto("/");
+  const emailLink = page.getByRole("link", { name: /อีเมล/ });
+
+  await expect(emailLink).toHaveAttribute(
+    "href",
+    "mailto:ball.56110m@gmail.com"
+  );
+  await expect(emailLink).toContainText("ball.56110m@gmail.com");
+});
+
+test("switches between Thai and English without reloading", async ({ page }) => {
+  await page.goto("/");
+  await page.getByRole("button", { name: "EN" }).click();
+
+  await expect(page.locator("html")).toHaveAttribute("lang", "en");
+  await expect(
+    page.locator("#primary-navigation").getByRole("link", {
+      name: "Projects",
+      exact: true
+    })
+  ).toBeVisible();
+  await expect(page.getByText("Software Developer Intern")).toBeVisible();
+
+  await page.reload();
+  await expect(page.locator("html")).toHaveAttribute("lang", "en");
+
+  await page.getByRole("button", { name: "TH" }).click();
+  await expect(page.locator("html")).toHaveAttribute("lang", "th");
+  await expect(
+    page.locator("#primary-navigation").getByRole("link", {
+      name: "ผลงาน",
+      exact: true
+    })
+  ).toBeVisible();
+});
+
+test("translates accessible interface labels in both languages", async ({ page }) => {
+  await page.goto("/");
+
+  await expect(page.locator(".skip-link")).toHaveText(
+    "ข้ามไปยังเนื้อหาหลัก"
+  );
+  await expect(page.locator("nav")).toHaveAttribute("aria-label", "เมนูหลัก");
+  await expect(page.locator(".language-switch")).toHaveAttribute(
+    "aria-label",
+    "เลือกภาษา"
+  );
+
+  await page.getByRole("button", { name: "EN" }).click();
+  await expect(page.locator(".skip-link")).toHaveText("Skip to main content");
+  await expect(page.locator("nav")).toHaveAttribute(
+    "aria-label",
+    "Primary navigation"
+  );
+  await expect(page.locator(".language-switch")).toHaveAttribute(
+    "aria-label",
+    "Choose language"
+  );
+
+  await page.getByRole("button", { name: "TH" }).click();
+  await expect(page.locator(".skip-link")).toHaveText(
+    "ข้ามไปยังเนื้อหาหลัก"
+  );
+  await expect(page.locator("nav")).toHaveAttribute("aria-label", "เมนูหลัก");
+  await expect(page.locator(".language-switch")).toHaveAttribute(
+    "aria-label",
+    "เลือกภาษา"
+  );
+});
+
+test("renders exactly four semantic bilingual skill groups", async ({ page }) => {
+  await page.goto("/");
+  const skills = page.locator("#skills");
+  const groups = skills.locator("[data-skill-group]");
+
+  await expect(groups).toHaveCount(4);
+  await expect(groups.getByRole("heading", { level: 3 })).toHaveText([
+    "ภาษาโปรแกรม",
+    "เฟรมเวิร์กและไลบรารี",
+    "ฐานข้อมูลและ API",
+    "เครื่องมือ"
+  ]);
+  await expect(groups.locator("ul")).toHaveCount(4);
+  await expect(groups.locator("li")).toHaveText([
+    "Python",
+    "JavaScript",
+    "TypeScript",
+    "HTML / CSS",
+    "Next.js",
+    "React",
+    "Tailwind CSS",
+    "PyTorch",
+    "Ultralytics (YOLO)",
+    "PostgreSQL",
+    "Prisma ORM",
+    "REST API",
+    "Git / GitHub",
+    "Postman",
+    "VS Code",
+    "Roboflow",
+    "Figma",
+    "Cloudflare"
+  ]);
+
+  await page.getByRole("button", { name: "EN" }).click();
+  await expect(groups.getByRole("heading", { level: 3 })).toHaveText([
+    "Programming Languages",
+    "Frameworks and Libraries",
+    "Database and API",
+    "Tools"
+  ]);
+});
+
+test("language switching survives unavailable localStorage", async ({ page }) => {
+  await page.addInitScript(() => {
+    Storage.prototype.getItem = () => {
+      throw new DOMException("Storage access denied", "SecurityError");
+    };
+    Storage.prototype.setItem = () => {
+      throw new DOMException("Storage access denied", "SecurityError");
+    };
+  });
+  await page.goto("/");
+
+  await page.getByRole("button", { name: "EN" }).click();
+  await expect(page.locator("html")).toHaveAttribute("lang", "en");
+  await expect(page.locator(".skip-link")).toHaveText("Skip to main content");
+});
+
+test("mobile menu exposes navigation and closes after selection", async ({ page }) => {
+  await page.setViewportSize({ width: 390, height: 844 });
+  await page.goto("/");
+
+  const menuButton = page.locator("[data-mobile-menu]");
+  await expect(menuButton).toHaveAccessibleName("เปิดเมนู");
+  await expect(menuButton).toHaveAttribute("aria-expanded", "false");
+  await menuButton.click();
+  await expect(menuButton).toHaveAccessibleName("ปิดเมนู");
+  await expect(menuButton).toHaveAttribute("aria-expanded", "true");
+  await page.locator("#primary-navigation").getByRole("link", {
+    name: "ผลงาน",
+    exact: true
+  }).click();
+  await expect(menuButton).toHaveAccessibleName("เปิดเมนู");
+  await expect(menuButton).toHaveAttribute("aria-expanded", "false");
+});
+
+test("mobile navigation and language controls have 44px touch targets", async ({ page }) => {
+  await page.setViewportSize({ width: 390, height: 844 });
+  await page.goto("/");
+  const menuButton = page.locator("[data-mobile-menu]");
+  await menuButton.click();
+
+  const targets = [
+    menuButton,
+    page.getByRole("button", { name: "TH" }),
+    page.getByRole("button", { name: "EN" }),
+    ...(await page.locator("#primary-navigation a").all())
+  ];
+
+  for (const target of targets) {
+    const box = await target.boundingBox();
+    expect(box, "touch target must have a rendered box").not.toBeNull();
+    expect(box.width).toBeGreaterThanOrEqual(44);
+    expect(box.height).toBeGreaterThanOrEqual(44);
+  }
+});
+
+test("resume module owns unavailable and configured bilingual states", async ({ page }) => {
+  await page.goto(developmentURL);
+
+  const moduleExports = await page.evaluate(async () =>
+    Object.keys(await import("/js/resume.js")).sort()
+  );
+  expect(moduleExports).toEqual(["initializeResume", "updateResume"]);
+
+  await expect(page.getByRole("button", { name: "ดาวน์โหลด Resume" }))
+    .toBeDisabled();
+  await expect(page.getByText("ยังไม่ได้เพิ่มไฟล์ Resume")).toBeVisible();
+
+  await page.evaluate(async () => {
+    const { portfolioContent } = await import("/js/content.js");
+    const { updateResume } = await import("/js/resume.js");
+    portfolioContent.resume.href = "/assets/resume/resume.pdf";
+    updateResume("en");
+    updateResume("en");
+  });
+
+  const control = page.locator("[data-resume-link]");
+  await expect(control).toHaveCount(1);
+  await expect(control).toHaveText("Download Resume");
+  await expect(control).toHaveAttribute("href", "/assets/resume/resume.pdf");
+  await expect(control).toHaveAttribute("target", "_blank");
+  await expect(control).toHaveAttribute("rel", "noopener noreferrer");
+
+  await page.evaluate(async () => {
+    const { updateResume } = await import("/js/resume.js");
+    updateResume("th");
+  });
+  await expect(control).toHaveText("ดาวน์โหลด Resume");
+});
+
+test("shows an honest bilingual state for a missing Resume", async ({ page }) => {
+  await page.goto("/");
+
+  await expect(page.getByRole("button", { name: "ดาวน์โหลด Resume" }))
+    .toBeDisabled();
+  await expect(page.getByText("ยังไม่ได้เพิ่มไฟล์ Resume")).toBeVisible();
+
+  await page.getByRole("button", { name: "EN" }).click();
+  await expect(page.getByRole("button", { name: "Download Resume" }))
+    .toBeDisabled();
+  await expect(page.getByText("Resume file has not been added")).toBeVisible();
+});
+
+test("does not expose the removed certificate feature", async ({ page }) => {
+  await page.goto("/");
+
+  await expect(page.locator("#certificates")).toHaveCount(0);
+  await expect(page.locator("[data-certificate-grid]")).toHaveCount(0);
+  await expect(page.locator("[data-certificate-modal]")).toHaveCount(0);
+  await expect(page.locator(
+    "[data-modal-title], [data-modal-image], [data-modal-pdf], "
+      + "[data-modal-download], [data-modal-close]"
+  )).toHaveCount(0);
+  await expect(
+    page.locator('#primary-navigation a[href="#certificates"]')
+  ).toHaveCount(0);
+  await expect(page.getByText("ใบประกาศนียบัตร", { exact: true }))
+    .toHaveCount(0);
+
+  await page.getByRole("button", { name: "EN" }).click();
+  await expect(page.getByText("Certificates", { exact: true })).toHaveCount(0);
+});
+
+test("Thai fallback stays visible and anchor navigation works when app.js is aborted", async ({ page }) => {
+  await page.setViewportSize({ width: 390, height: 844 });
+  await page.route("**/*", async (route) => {
+    const request = route.request();
+    const path = new URL(request.url()).pathname;
+    const isApplicationEntry = request.resourceType() === "script"
+      && (
+        path.endsWith("/js/app.js")
+        || /^\/assets\/index-[A-Za-z0-9_-]+\.js$/.test(path)
+      );
+
+    if (isApplicationEntry) {
+      await route.abort();
+      return;
+    }
+    await route.continue();
+  });
+  await page.goto("/", { waitUntil: "domcontentloaded" });
+
+  const navigation = page.locator("#primary-navigation");
+  await expect(navigation.getByRole("link")).toHaveCount(6);
+  for (const link of await navigation.getByRole("link").all()) {
+    await expect(link).toBeVisible();
+  }
+  await expect(page.locator(".skip-link")).toHaveText(
+    "ข้ามไปยังเนื้อหาหลัก"
+  );
+  await expect(page.locator("nav")).toHaveAttribute("aria-label", "เมนูหลัก");
+  await expect(page.locator(".language-switch")).toHaveAttribute(
+    "aria-label",
+    "เลือกภาษา"
+  );
+  for (const id of sectionIds) {
+    await expect(page.locator(`#${id}`)).toBeVisible();
+  }
+  const fallbackSkillGroups = page.locator(
+    "#skills [data-skill-group]"
+  );
+  await expect(fallbackSkillGroups).toHaveCount(4);
+  await expect(
+    fallbackSkillGroups.getByRole("heading", { level: 3 })
+  ).toHaveText([
+    "ภาษาโปรแกรม",
+    "เฟรมเวิร์กและไลบรารี",
+    "ฐานข้อมูลและ API",
+    "เครื่องมือ"
+  ]);
+  await expect(fallbackSkillGroups.locator("li")).toHaveCount(18);
+
+  await navigation.getByRole("link", { name: "ติดต่อ", exact: true }).click();
+  await expect(page).toHaveURL(/#contact$/);
+  await expect(page.locator("html")).not.toHaveClass(/navigation-ready/);
+  await expect(page.locator("html")).not.toHaveClass(/reveal-ready/);
+});
+
+test("aborted StockFlow image becomes a localized accessible placeholder", async ({ page }) => {
+  await page.route(
+    "**/assets/projects/stockflow-dashboard.png",
+    (route) => route.abort()
+  );
+  await page.goto("/");
+
+  const placeholder = page.locator('[data-project-image="stockflow"]');
+  await expect(placeholder).toHaveClass(/project-image-fallback/);
+  await expect(placeholder).toHaveAttribute("role", "img");
+  await expect(placeholder).toHaveAttribute(
+    "aria-label",
+    "หน้าจอ Dashboard ของระบบ StockFlow"
+  );
+  await expect(
+    placeholder.locator("[data-project-image-status]")
+  ).toHaveText("ไม่สามารถแสดงภาพโครงการได้");
+
+  await page.getByRole("button", { name: "EN" }).click();
+  await expect(placeholder).toHaveAttribute(
+    "aria-label",
+    "StockFlow Dashboard screen"
+  );
+  await expect(
+    placeholder.locator("[data-project-image-status]")
+  ).toHaveText("Project image unavailable");
+});
+
+test("reduced motion reveals every section without animation dependence", async ({ page }) => {
+  await page.emulateMedia({ reducedMotion: "reduce" });
+  await page.goto("/");
+
+  await expect(page.locator("html")).toHaveClass(/reveal-ready/);
+  const reveals = page.locator(".reveal");
+  await expect(reveals).not.toHaveCount(0);
+  for (const reveal of await reveals.all()) {
+    await expect(reveal).toHaveClass(/is-visible/);
+    await expect(reveal).toHaveCSS("opacity", "1");
+  }
+});
+
+test("missing IntersectionObserver preserves reveals and mobile navigation", async ({ page }) => {
+  await page.addInitScript(() => {
+    delete window.IntersectionObserver;
+  });
+  await page.setViewportSize({ width: 390, height: 844 });
+  await page.goto("/");
+
+  await expect(page.locator("html")).toHaveClass(/navigation-ready/);
+  await expect(page.locator("html")).toHaveClass(/reveal-ready/);
+  for (const reveal of await page.locator(".reveal").all()) {
+    await expect(reveal).toHaveClass(/is-visible/);
+    await expect(reveal).toBeVisible();
+  }
+
+  const menuButton = page.locator("[data-mobile-menu]");
+  await menuButton.click();
+  await expect(menuButton).toHaveAttribute("aria-expanded", "true");
+  await expect(page.locator("#primary-navigation")).toBeVisible();
+});
+
+test("has no horizontal overflow on representative viewports", async ({ page }) => {
+  for (const viewport of [
+    { width: 390, height: 844 },
+    { width: 768, height: 1024 },
+    { width: 1440, height: 900 }
+  ]) {
+    await page.setViewportSize(viewport);
+    await page.goto("/");
+    const overflow = await page.evaluate(
+      () => document.documentElement.scrollWidth > document.documentElement.clientWidth
+    );
+    expect(overflow).toBe(false);
+  }
+});
+
+test("contact and external project links are safe", async ({ page }) => {
+  await page.goto("/");
+  await expect(page.getByRole("link", { name: /GitHub/ }).first())
+    .toHaveAttribute("rel", /noopener/);
+  await expect(page.getByRole("link", { name: /Email|อีเมล/ }))
+    .toHaveAttribute("href", /^mailto:/);
+});
+
+test("publishes complete sharing metadata", async ({ page }) => {
+  await page.goto("/");
+  await expect(page.locator('meta[property="og:title"]'))
+    .toHaveAttribute("content", /Khongkaphan/);
+  await expect(page.locator('meta[property="og:image"]'))
+    .toHaveAttribute("content", /assets\/social-preview\.png$/);
+});
+
+test("serves public assets from deployment-stable URLs", async ({ request }) => {
+  for (const [path, contentType] of [
+    ["/assets/avatar.jpg", "image/jpeg"],
+    ["/assets/projects/stockflow-dashboard.png", "image/png"],
+    ["/assets/social-preview.png", "image/png"]
+  ]) {
+    const response = await request.get(path);
+    expect(response.status(), `${path} status`).toBe(200);
+    expect(response.headers()["content-type"], `${path} content type`).toContain(
+      contentType
+    );
+    expect((await response.body()).byteLength, `${path} body`).toBeGreaterThan(0);
+  }
+});

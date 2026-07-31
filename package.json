@@ -1,0 +1,19 @@
+{
+  "name": "khongkaphan-portfolio",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "vite --host 127.0.0.1",
+    "build": "vite build",
+    "preview": "npm run build && vite preview --host 127.0.0.1 --port 4173",
+    "test": "node --test tests/content.test.mjs tests/deployment-config.test.mjs",
+    "test:assets": "node --test tests/asset-scan.test.mjs",
+    "test:e2e": "playwright test",
+    "check": "npm run test && npm run build && npm run test:assets && npm run test:e2e"
+  },
+  "devDependencies": {
+    "@playwright/test": "^1.62.0",
+    "vite": "^7.2.4"
+  }
+}
