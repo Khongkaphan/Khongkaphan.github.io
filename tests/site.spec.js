@@ -12,7 +12,7 @@ const sectionIds = [
 
 async function expectProjectImagesToDecode(page) {
   const imageResults = await page.locator(
-    'img[src="/assets/avatar.jpg"], img[src="/assets/projects/stockflow-dashboard.png"]'
+    'img[data-project-image="moderation-api"], img[data-project-image="stockflow"]'
   ).evaluateAll(async (images) =>
     Promise.all(images.map(async (image) => {
       await image.decode();
@@ -25,10 +25,10 @@ async function expectProjectImagesToDecode(page) {
   );
 
   expect(imageResults).toHaveLength(2);
-  for (const image of imageResults) {
-    expect(image.complete).toBe(true);
-    expect(image.naturalWidth).toBeGreaterThan(0);
-    expect(image.naturalHeight).toBeGreaterThan(0);
+  for (const result of imageResults) {
+    expect(result.complete).toBe(true);
+    expect(result.naturalWidth).toBeGreaterThan(0);
+    expect(result.naturalHeight).toBeGreaterThan(0);
   }
 }
 
@@ -63,6 +63,13 @@ test("production project images keep decoding across navigations", async ({ page
     .toHaveAttribute("src", /assets\/avatar\.jpg$/);
   await expect(page.getByRole("img", { name: /Dashboard.*StockFlow|StockFlow.*Dashboard/ }))
     .toHaveAttribute("src", /stockflow-dashboard\.png$/);
+  const moderationImage = page.locator(
+    'img[data-project-image="moderation-api"]'
+  );
+  await expect(moderationImage)
+    .toHaveAttribute("src", /assets\/projects\/moderation-api\.png$/);
+  await expect(moderationImage).toHaveCSS("object-fit", "cover");
+  await expect(moderationImage).toHaveCSS("object-position", "50% 50%");
   await expectProjectImagesToDecode(page);
 
   await page.reload();
@@ -388,6 +395,19 @@ test("aborted StockFlow image becomes a localized accessible placeholder", async
   ).toHaveText("Project image unavailable");
 });
 
+test("aborted moderation image becomes a localized accessible placeholder", async ({ page }) => {
+  await page.route(
+    "**/assets/projects/moderation-api.png",
+    (route) => route.abort()
+  );
+  await page.goto("/");
+
+  const placeholder = page.locator('[data-project-image="moderation-api"]');
+  await expect(placeholder).toHaveClass(/project-image-fallback/);
+  await expect(placeholder).toHaveAttribute("role", "img");
+  await expect(placeholder).toContainText(/ไม่สามารถแสดงภาพโครงการได้|Project image unavailable/);
+});
+
 test("reduced motion reveals every section without animation dependence", async ({ page }) => {
   await page.emulateMedia({ reducedMotion: "reduce" });
   await page.goto("/");
@@ -455,6 +475,7 @@ test("publishes complete sharing metadata", async ({ page }) => {
 test("serves public assets from deployment-stable URLs", async ({ request }) => {
   for (const [path, contentType] of [
     ["/assets/avatar.jpg", "image/jpeg"],
+    ["/assets/projects/moderation-api.png", "image/png"],
     ["/assets/projects/stockflow-dashboard.png", "image/png"],
     ["/assets/social-preview.png", "image/png"]
   ]) {

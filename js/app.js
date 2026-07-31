@@ -62,6 +62,11 @@ function replaceFailedProjectImage(image, project) {
   image.replaceWith(placeholder);
 }
 
+const PROJECT_IMAGE_SOURCES = Object.freeze({
+  "moderation-api": "/assets/projects/moderation-api.png",
+  stockflow: "/assets/projects/stockflow-dashboard.png"
+});
+
 function renderProjects() {
   const list = document.querySelector("[data-project-list]");
   list.replaceChildren(
@@ -71,17 +76,8 @@ function renderProjects() {
       article.dataset.project = project.id;
       const language = portfolioContent.defaultLanguage;
       const alt = getText(language, project.altKey);
-      const visual = project.id === "stockflow"
-        ? `<img src="/assets/projects/stockflow-dashboard.png"
-            data-project-image="${project.id}" alt="${alt}">`
-        : `<div class="project-placeholder" role="img"
-            data-project-image="${project.id}" aria-label="${alt}">
-            AI / COMPUTER VISION
-            <span class="detection-frame"></span>
-            <span class="detection-frame"></span>
-            <span class="detection-frame"></span>
-            <span class="detection-frame"></span>
-          </div>`;
+      const visual = `<img src="${PROJECT_IMAGE_SOURCES[project.id]}"
+          data-project-image="${project.id}" alt="${alt}">`;
       article.innerHTML = `
         ${visual}
         <div>

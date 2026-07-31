@@ -14,6 +14,7 @@ const publicRoot = join(projectRoot, "public");
 const distRoot = join(projectRoot, "dist");
 const passthroughAssets = [
   "assets/avatar.jpg",
+  "assets/projects/moderation-api.png",
   "assets/projects/stockflow-dashboard.png",
   "assets/social-preview.png"
 ];
