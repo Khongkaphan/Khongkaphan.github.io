@@ -246,6 +246,17 @@ test("mobile navigation and language controls have 44px touch targets", async ({
 });
 
 test("resume module owns unavailable and configured bilingual states", async ({ page }) => {
+  await page.route("**/js/content.js", async (route) => {
+    const response = await route.fetch();
+    const body = await response.text();
+    await route.fulfill({
+      response,
+      body: body.replace(
+        'resume: { href: "/assets/resume/resume.pdf" }',
+        "resume: { href: null }"
+      )
+    });
+  });
   await page.goto(developmentURL);
 
   const moduleExports = await page.evaluate(async () =>
@@ -279,17 +290,23 @@ test("resume module owns unavailable and configured bilingual states", async ({ 
   await expect(control).toHaveText("ดาวน์โหลด Resume");
 });
 
-test("shows an honest bilingual state for a missing Resume", async ({ page }) => {
+test("exposes the configured Resume in Thai and English", async ({ page }) => {
   await page.goto("/");
 
-  await expect(page.getByRole("button", { name: "ดาวน์โหลด Resume" }))
-    .toBeDisabled();
-  await expect(page.getByText("ยังไม่ได้เพิ่มไฟล์ Resume")).toBeVisible();
+  const control = page.locator("[data-resume-link]");
+  await expect(control).toHaveText("ดาวน์โหลด Resume");
+  await expect(control).toHaveAttribute("href", "/assets/resume/resume.pdf");
+  await expect(control).toHaveAttribute("target", "_blank");
+  await expect(control).toHaveAttribute("rel", "noopener noreferrer");
+  await expect(page.locator("[data-resume-status]")).toBeEmpty();
+
+  const response = await page.request.get("/assets/resume/resume.pdf");
+  expect(response.ok()).toBe(true);
+  expect(response.headers()["content-type"]).toContain("application/pdf");
+  expect((await response.body()).subarray(0, 5).toString()).toBe("%PDF-");
 
   await page.getByRole("button", { name: "EN" }).click();
-  await expect(page.getByRole("button", { name: "Download Resume" }))
-    .toBeDisabled();
-  await expect(page.getByText("Resume file has not been added")).toBeVisible();
+  await expect(control).toHaveText("Download Resume");
 });
 
 test("does not expose the removed certificate feature", async ({ page }) => {

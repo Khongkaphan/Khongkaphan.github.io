@@ -160,7 +160,7 @@ export const portfolioContent = {
       github: null
     }
   ],
-  resume: { href: null },
+  resume: { href: "/assets/resume/resume.pdf" },
   contact: {
     phone: "0932795834",
     email: "ball.56110m@gmail.com",

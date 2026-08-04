@@ -22,8 +22,11 @@ test("portfolio contains the two approved projects", () => {
   );
 });
 
-test("missing Resume is honest and the certificate feature is absent", () => {
-  assert.equal(portfolioContent.resume.href, null);
+test("Resume is configured and the certificate feature is absent", () => {
+  assert.equal(
+    portfolioContent.resume.href,
+    "/assets/resume/resume.pdf"
+  );
   assert.equal("certificates" in portfolioContent, false);
 
   for (const language of ["th", "en"]) {
