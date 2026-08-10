@@ -34,11 +34,16 @@ Vite, HTML, CSS, and JavaScript.
 
 ### Replace the Transcript
 
-1. Extract the approved source page as a one-page PDF.
-2. Replace `public/assets/transcript/transcript.pdf`.
-3. Keep `transcript: { href: "/assets/transcript/transcript.pdf" }` in
-   `js/content.js`.
-4. Run `npm run check` before publishing.
+1. Use the original university PDF without extracting, rewriting, cropping,
+   rasterizing, or redacting pages.
+2. Replace `public/assets/transcript/transcript.pdf` byte-for-byte.
+3. Keep
+   `transcript: { href: "/assets/transcript/transcript.pdf#page=3" }` in
+   `js/content.js`; the fragment controls only the initially displayed page.
+4. Update the expected SHA-256 and byte length in
+   `tests/asset-scan.test.mjs` only when the university issues a genuinely new
+   original document.
+5. Run `npm run check` before publishing.
 
 ### Replace a project image
 
