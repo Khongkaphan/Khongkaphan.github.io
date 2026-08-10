@@ -15,40 +15,50 @@ test("English and Thai expose the same translation keys", () => {
   );
 });
 
-test("portfolio contains the two approved projects", () => {
+test("portfolio contains only the approved Objexify group project", () => {
   assert.deepEqual(
     portfolioContent.projects.map((project) => project.id),
-    ["moderation-api", "stockflow"]
+    ["moderation-api"]
+  );
+
+  const project = portfolioContent.projects[0];
+  assert.equal(project.typeKey, "project.moderation.type");
+  assert.equal(project.capabilityKey, "project.moderation.capability");
+  assert.deepEqual(project.contributionKeys, [
+    "project.moderation.contribution.dataset",
+    "project.moderation.contribution.evaluation",
+    "project.moderation.contribution.mongodb",
+    "project.moderation.contribution.cloudflare",
+    "project.moderation.contribution.figma"
+  ]);
+  assert.equal(project.github, null);
+});
+
+test("Objexify copy keeps system capability separate from personal contribution", () => {
+  assert.equal(getText("th", "project.moderation.type"), "โครงการจบแบบกลุ่ม");
+  assert.match(getText("th", "project.moderation.capability"), /ภาพโป๊เปลือย.*อาวุธ.*บุหรี่.*ความรุนแรง/);
+  assert.match(getText("th", "project.moderation.contribution.dataset"), /YOLO11m จำนวน 4 โมเดล/);
+  assert.match(getText("th", "project.moderation.contribution.cloudflare"), /DigitalPlat.*Cloudflare DNS.*Cloudflare Tunnel.*Port 5000/);
+  assert.match(getText("en", "project.moderation.type"), /Group senior project/);
+  assert.doesNotMatch(
+    portfolioContent.projects[0].contributionKeys
+      .map((key) => getText("en", key)).join(" "),
+    /developed the Backend|developed the Frontend|built the entire MongoDB/i
   );
 });
 
 test("Resume is configured and the certificate feature is absent", () => {
-  assert.equal(
-    portfolioContent.resume.href,
-    "/assets/resume/resume.pdf"
-  );
+  assert.equal(portfolioContent.resume.href, "/assets/resume/resume.pdf");
   assert.equal("certificates" in portfolioContent, false);
-
   for (const language of ["th", "en"]) {
-    const certificateKeys = Object.keys(
-      portfolioContent.translations[language]
-    ).filter((key) => key.toLowerCase().includes("certificate"));
+    const certificateKeys = Object.keys(portfolioContent.translations[language])
+      .filter((key) => key.toLowerCase().includes("certificate"));
     assert.deepEqual(certificateKeys, []);
   }
 });
 
 test("contact email uses the owner-confirmed address", () => {
   assert.equal(portfolioContent.contact.email, "ball.56110m@gmail.com");
-});
-
-test("technology names remain in English", () => {
-  const technologies = portfolioContent.projects.flatMap(
-    (project) => project.technologies
-  );
-  assert.ok(technologies.includes("Next.js"));
-  assert.ok(technologies.includes("PostgreSQL"));
-  assert.ok(technologies.includes("YOLO11m"));
-  assert.ok(technologies.includes("FastAPI"));
 });
 
 test("accessible interface labels have complete Thai and English translations", () => {
@@ -80,53 +90,21 @@ test("accessible interface labels have complete Thai and English translations", 
   );
 });
 
-test("skills use the four approved bilingual groups without adding items", () => {
+test("skills contain only the approved interview-safe items", () => {
   assert.deepEqual(portfolioContent.skills, [
-    {
-      id: "programming-languages",
-      labelKey: "skills.group.programmingLanguages",
-      items: ["Python", "JavaScript", "TypeScript", "HTML / CSS"]
-    },
-    {
-      id: "frameworks-libraries",
-      labelKey: "skills.group.frameworksLibraries",
-      items: [
-        "Next.js",
-        "React",
-        "Tailwind CSS",
-        "PyTorch",
-        "Ultralytics (YOLO)"
-      ]
-    },
-    {
-      id: "database-api",
-      labelKey: "skills.group.databaseApi",
-      items: ["PostgreSQL", "Prisma ORM", "REST API"]
-    },
-    {
-      id: "tools",
-      labelKey: "skills.group.tools",
-      items: [
-        "Git / GitHub",
-        "Postman",
-        "VS Code",
-        "Roboflow",
-        "Figma",
-        "Cloudflare"
-      ]
-    }
+    { id: "programming-languages", labelKey: "skills.group.programmingLanguages", items: ["Python", "JavaScript", "HTML / CSS"] },
+    { id: "frameworks-libraries", labelKey: "skills.group.frameworksLibraries", items: ["PyTorch", "Ultralytics (YOLO)"] },
+    { id: "database-api", labelKey: "skills.group.databaseApi", items: ["REST API"] },
+    { id: "tools", labelKey: "skills.group.tools", items: ["Git / GitHub", "Postman", "VS Code", "Roboflow", "Figma", "Cloudflare"] }
   ]);
+});
 
-  assert.deepEqual(
-    portfolioContent.skills.map(({ labelKey }) => ({
-      th: getText("th", labelKey),
-      en: getText("en", labelKey)
-    })),
-    [
-      { th: "ภาษาโปรแกรม", en: "Programming Languages" },
-      { th: "เฟรมเวิร์กและไลบรารี", en: "Frameworks and Libraries" },
-      { th: "ฐานข้อมูลและ API", en: "Database and API" },
-      { th: "เครื่องมือ", en: "Tools" }
-    ]
-  );
+test("removed StockFlow content and technologies are absent", () => {
+  const serialized = JSON.stringify(portfolioContent);
+  for (const removed of [
+    "stockflow", "StockFlow", "TypeScript", "Next.js", "React",
+    "Tailwind CSS", "PostgreSQL", "Prisma ORM"
+  ]) {
+    assert.equal(serialized.includes(removed), false, `${removed} must be absent`);
+  }
 });

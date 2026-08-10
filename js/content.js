@@ -29,14 +29,17 @@ const th = {
   "education.period": "2023 - ปัจจุบัน",
   "education.gpa": "เกรดเฉลี่ยสะสม 3.47",
   "projects.title": "ผลงาน",
-  "project.moderation.title": "บริการ API สำหรับตรวจจับวัตถุไม่เหมาะสมภายในภาพ",
-  "project.moderation.description": "โครงงานจบแบบกลุ่มสำหรับตรวจจับวัตถุไม่เหมาะสมภายในภาพและวิดีโอด้วย AI พร้อมให้บริการผลการตรวจจับผ่าน API เพื่อให้ระบบอื่นนำไปใช้งานต่อได้",
-  "project.moderation.responsibility": "ร่วมพัฒนาและฝึกสอนโมเดล จัดเตรียม Label และชุดข้อมูล ประเมินประสิทธิภาพโมเดล ตั้งค่า Cloudflare และออกแบบหน้าจอเบื้องต้นด้วย Figma",
-  "project.moderation.alt": "ภาพประกอบโครงงานบริการ API ตรวจจับวัตถุไม่เหมาะสม",
-  "project.stockflow.title": "StockFlow — ระบบจัดการคลังสินค้า",
-  "project.stockflow.description": "เว็บแอปพลิเคชัน Full-stack สำหรับจัดการสินค้า รับเข้า เบิกออก ตรวจสอบประวัติ และสรุปยอดคงเหลือผ่าน Dashboard",
-  "project.stockflow.responsibility": "พัฒนาระบบเข้าสู่ระบบและแบ่งสิทธิ์ จัดการข้อมูลคลัง ป้องกันการเบิกเกินสต็อก และรองรับการยกเลิกเอกสาร",
-  "project.stockflow.alt": "หน้าจอ Dashboard ของระบบ StockFlow",
+  "project.moderation.title": "Objexify — บริการ API สำหรับตรวจจับวัตถุไม่เหมาะสม",
+  "project.moderation.type": "โครงการจบแบบกลุ่ม",
+  "project.moderation.capabilityLabel": "ความสามารถของระบบ",
+  "project.moderation.capability": "ระบบ AI สำหรับตรวจจับวัตถุไม่เหมาะสมในภาพและวิดีโอ ได้แก่ ภาพโป๊เปลือย อาวุธ บุหรี่ และความรุนแรง โดยให้บริการผลการตรวจจับและตำแหน่ง Bounding Box ผ่าน API เพื่อให้ระบบอื่นนำไปใช้งานต่อได้",
+  "project.moderation.contributionLabel": "หน้าที่ของผม",
+  "project.moderation.contribution.dataset": "เตรียมและปรับปรุง Dataset ทำ Label และฝึกสอนโมเดล YOLO11m จำนวน 4 โมเดล",
+  "project.moderation.contribution.evaluation": "ประเมินโมเดลด้วย mAP50-95, Precision และ Recall พร้อมทดลองเพิ่ม Background Images เพื่อลดการตรวจจับผิดพลาด",
+  "project.moderation.contribution.mongodb": "มีส่วนร่วมในงานส่วนฐานข้อมูล MongoDB ของโครงการ",
+  "project.moderation.contribution.cloudflare": "ตั้งค่าโดเมน objexify.dpdns.org จาก DigitalPlat ให้ใช้งานร่วมกับ Cloudflare DNS และสร้าง Cloudflare Tunnel เชื่อมไปยัง FastAPI ที่รันบน Port 5000",
+  "project.moderation.contribution.figma": "ออกแบบหน้าจอและ User Flow บางส่วนด้วย Figma",
+  "project.moderation.alt": "ภาพหน้าจอระบบ Objexify สำหรับตรวจจับวัตถุไม่เหมาะสม",
   "project.imageUnavailable": "ไม่สามารถแสดงภาพโครงการได้",
   "project.github": "เปิด GitHub",
   "contact.title": "ติดต่อฉัน",
@@ -78,14 +81,17 @@ const en = {
   "education.period": "2023 - Present",
   "education.gpa": "GPA 3.47",
   "projects.title": "Projects",
-  "project.moderation.title": "Inappropriate Content Detection API",
-  "project.moderation.description": "A group senior project that detects inappropriate objects in images and videos with AI and provides detection results through an API for other systems.",
-  "project.moderation.responsibility": "Contributed to model training, labels and dataset preparation, model evaluation, Cloudflare configuration, and early interface design in Figma.",
-  "project.moderation.alt": "Inappropriate Content Detection API project illustration",
-  "project.stockflow.title": "StockFlow — Warehouse Management System",
-  "project.stockflow.description": "A Full-stack application for products, receipts, issues, history, and inventory summaries through a Dashboard.",
-  "project.stockflow.responsibility": "Built authentication and roles, warehouse data workflows, over-issue prevention, and document cancellation.",
-  "project.stockflow.alt": "StockFlow Dashboard screen",
+  "project.moderation.title": "Objexify — Inappropriate Content Detection API",
+  "project.moderation.type": "Group senior project",
+  "project.moderation.capabilityLabel": "System capability",
+  "project.moderation.capability": "An AI service that detects pornography, weapons, cigarettes, and violence in images and videos, returning detection results and bounding-box coordinates through an API for integration with other systems.",
+  "project.moderation.contributionLabel": "My contribution",
+  "project.moderation.contribution.dataset": "Prepared and refined datasets, created labels, and trained four YOLO11m models.",
+  "project.moderation.contribution.evaluation": "Evaluated the models using mAP50-95, Precision, and Recall, and experimented with background images to reduce false detections.",
+  "project.moderation.contribution.mongodb": "Contributed to the project's MongoDB-related work.",
+  "project.moderation.contribution.cloudflare": "Configured the DigitalPlat domain objexify.dpdns.org with Cloudflare DNS and created a Cloudflare Tunnel to the FastAPI service running on port 5000.",
+  "project.moderation.contribution.figma": "Designed selected screens and user flows in Figma.",
+  "project.moderation.alt": "Objexify inappropriate content detection system screen",
   "project.imageUnavailable": "Project image unavailable",
   "project.github": "View on GitHub",
   "contact.title": "Contact Me",
@@ -103,23 +109,17 @@ export const portfolioContent = {
     {
       id: "programming-languages",
       labelKey: "skills.group.programmingLanguages",
-      items: ["Python", "JavaScript", "TypeScript", "HTML / CSS"]
+      items: ["Python", "JavaScript", "HTML / CSS"]
     },
     {
       id: "frameworks-libraries",
       labelKey: "skills.group.frameworksLibraries",
-      items: [
-        "Next.js",
-        "React",
-        "Tailwind CSS",
-        "PyTorch",
-        "Ultralytics (YOLO)"
-      ]
+      items: ["PyTorch", "Ultralytics (YOLO)"]
     },
     {
       id: "database-api",
       labelKey: "skills.group.databaseApi",
-      items: ["PostgreSQL", "Prisma ORM", "REST API"]
+      items: ["REST API"]
     },
     {
       id: "tools",
@@ -144,19 +144,23 @@ export const portfolioContent = {
     {
       id: "moderation-api",
       titleKey: "project.moderation.title",
-      descriptionKey: "project.moderation.description",
-      responsibilityKey: "project.moderation.responsibility",
+      typeKey: "project.moderation.type",
+      capabilityLabelKey: "project.moderation.capabilityLabel",
+      capabilityKey: "project.moderation.capability",
+      contributionLabelKey: "project.moderation.contributionLabel",
+      contributionKeys: [
+        "project.moderation.contribution.dataset",
+        "project.moderation.contribution.evaluation",
+        "project.moderation.contribution.mongodb",
+        "project.moderation.contribution.cloudflare",
+        "project.moderation.contribution.figma"
+      ],
       altKey: "project.moderation.alt",
-      technologies: ["YOLO11m", "FastAPI", "MongoDB", "OCR"],
-      github: "https://github.com/Phurin123/Project-Api-detect_inappropriate-main"
-    },
-    {
-      id: "stockflow",
-      titleKey: "project.stockflow.title",
-      descriptionKey: "project.stockflow.description",
-      responsibilityKey: "project.stockflow.responsibility",
-      altKey: "project.stockflow.alt",
-      technologies: ["Next.js", "TypeScript", "PostgreSQL", "Prisma ORM"],
+      technologies: [
+        "Python", "FastAPI", "YOLO11m / Ultralytics", "PyTorch", "OpenCV",
+        "MongoDB / PyMongo", "REST API / JSON", "Cloudflare Tunnel",
+        "DigitalPlat DNS", "Figma"
+      ],
       github: null
     }
   ],
