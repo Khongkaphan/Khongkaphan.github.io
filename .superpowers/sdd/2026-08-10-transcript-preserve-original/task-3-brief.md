@@ -4,7 +4,7 @@
 - Verify only: all tracked files from Tasks 1 and 2
 
 **Interfaces:**
-- Consumes: verified local `main` commits.
+- Consumes: verified feature `HEAD` commits from the current worktree.
 - Produces: a fully verified feature branch ready for the required final whole-branch review.
 
 - [ ] **Step 1: Run the complete fresh verification suite**

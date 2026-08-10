@@ -43,7 +43,27 @@ Vite, HTML, CSS, and JavaScript.
 4. Update the expected SHA-256 and byte length in
    `tests/asset-scan.test.mjs` only when the university issues a genuinely new
    original document.
-5. Run `npm run check` before publishing.
+5. From the repository root, validate the replacement's structure against the
+   current checkout (not another worktree):
+
+   ```powershell
+   $env:TRANSCRIPT_PDF =
+     (Resolve-Path 'public\assets\transcript\transcript.pdf').Path
+   @'
+   import os
+   from pypdf import PdfReader
+
+   reader = PdfReader(os.environ["TRANSCRIPT_PDF"])
+   assert len(reader.pages) == 3
+   assert "/OCProperties" in reader.trailer["/Root"]
+   assert "Signature1" in (reader.get_fields() or {})
+   print("pages=3, OCProperties=present, Signature1=present")
+   '@ | & 'C:\Users\khongkaphan\.cache\codex-runtimes\codex-primary-runtime\dependencies\python\python.exe' -
+   ```
+
+   The command must report `pages=3, OCProperties=present,
+   Signature1=present`.
+6. Run `npm run check` before publishing.
 
 ### Replace a project image
 

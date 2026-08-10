@@ -408,8 +408,14 @@ test("Thai static fallback contains the complete Objexify case study and anchor 
   await expect(page.getByText("หน้าที่ของผม", { exact: true })).toBeVisible();
   await expect(page.locator("[data-project-list] li")).toHaveCount(15);
   await expect(page.getByText("StockFlow", { exact: false })).toHaveCount(0);
-  await expect(page.locator("[data-transcript-link]")).toHaveAttribute(
+  const transcriptLink = page.locator("[data-transcript-link]");
+  await expect(transcriptLink).toHaveText("Transcript");
+  await expect(transcriptLink).toHaveAttribute(
     "href", "/assets/transcript/transcript.pdf#page=3"
+  );
+  await expect(transcriptLink).toHaveAttribute("target", "_blank");
+  await expect(transcriptLink).toHaveAttribute(
+    "rel", "noopener noreferrer"
   );
   await expect(page.locator("[data-transcript-status]")).toBeEmpty();
   const projectsHtml = await page.locator("[data-project-list]").evaluate(

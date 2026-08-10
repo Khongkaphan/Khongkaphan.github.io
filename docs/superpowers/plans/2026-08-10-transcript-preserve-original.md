@@ -186,7 +186,7 @@ Run this exact copy operation without opening the file in a PDF editor:
 ```powershell
 Copy-Item -LiteralPath `
   'C:\Users\khongkaphan\Downloads\ใบรายงานผลการศึกษา ฉบับแปล (ก่อนสำเร็จการศึกษา).pdf' `
-  -Destination 'D:\portfolio-site\public\assets\transcript\transcript.pdf' `
+  -Destination 'public\assets\transcript\transcript.pdf' `
   -Force
 ```
 
@@ -206,7 +206,27 @@ Replace the Transcript section in `README.md` with:
 4. Update the expected SHA-256 and byte length in
    `tests/asset-scan.test.mjs` only when the university issues a genuinely new
    original document.
-5. Run `npm run check` before publishing.
+5. From the repository root, validate the replacement's structure against the
+   current checkout (not another worktree):
+
+   ```powershell
+   $env:TRANSCRIPT_PDF =
+     (Resolve-Path 'public\assets\transcript\transcript.pdf').Path
+   @'
+   import os
+   from pypdf import PdfReader
+
+   reader = PdfReader(os.environ["TRANSCRIPT_PDF"])
+   assert len(reader.pages) == 3
+   assert "/OCProperties" in reader.trailer["/Root"]
+   assert "Signature1" in (reader.get_fields() or {})
+   print("pages=3, OCProperties=present, Signature1=present")
+   '@ | & 'C:\Users\khongkaphan\.cache\codex-runtimes\codex-primary-runtime\dependencies\python\python.exe' -
+   ```
+
+   The command must report `pages=3, OCProperties=present,
+   Signature1=present`.
+6. Run `npm run check` before publishing.
 ```
 
 - [ ] **Step 5: Verify GREEN and document integrity**
@@ -230,7 +250,7 @@ Run:
 
 ```powershell
 $env:TRANSCRIPT_PDF =
-  'D:\portfolio-site\public\assets\transcript\transcript.pdf'
+  (Resolve-Path 'public\assets\transcript\transcript.pdf').Path
 $env:PYTHONIOENCODING = 'utf-8'
 @'
 import os
@@ -276,7 +296,7 @@ git commit -m "fix: preserve original Transcript document"
 - Verify only: all tracked files from Tasks 1 and 2
 
 **Interfaces:**
-- Consumes: verified local `main` commits.
+- Consumes: verified feature `HEAD` commits from the current worktree.
 - Produces: a fully verified feature branch ready for the required final whole-branch review.
 
 - [ ] **Step 1: Run the complete fresh verification suite**
@@ -291,11 +311,11 @@ Expected: 10 Node tests pass, Vite production build succeeds, 6 asset tests pass
 
 ```powershell
 git status --short --branch
-git log --oneline origin/main..main
-git diff --check origin/main..main
+git log --oneline origin/main..HEAD
+git diff --check origin/main..HEAD
 ```
 
-Expected: only the approved design/plan, link-contract, test, README, and Transcript asset commits are ahead of the branch merge base; the ignored SDD workspace and `tmp/` remain uncommitted.
+Expected: only the approved design/plan, link-contract, test, README, and Transcript asset commits are included in the `origin/main..HEAD` feature range; the ignored SDD workspace and permitted untracked `tmp/` may remain uncommitted, while tracked working-tree files remain unchanged.
 
 - [ ] **Step 3: Record verification evidence for final review**
 
