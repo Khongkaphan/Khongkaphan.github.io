@@ -270,14 +270,14 @@ git commit -m "fix: preserve original Transcript document"
 
 ---
 
-### Task 3: Full Verification and GitHub Pages Publication
+### Task 3: Full Verification Before Final Review
 
 **Files:**
 - Verify only: all tracked files from Tasks 1 and 2
 
 **Interfaces:**
 - Consumes: verified local `main` commits.
-- Produces: `origin/main` and GitHub Pages serving the original PDF with the Portfolio link opening page 3.
+- Produces: a fully verified feature branch ready for the required final whole-branch review.
 
 - [ ] **Step 1: Run the complete fresh verification suite**
 
@@ -295,17 +295,30 @@ git log --oneline origin/main..main
 git diff --check origin/main..main
 ```
 
-Expected: only the approved design/plan, link-contract, test, README, and Transcript asset commits are ahead of `origin/main`; existing untracked `.superpowers/` and `tmp/` remain uncommitted.
+Expected: only the approved design/plan, link-contract, test, README, and Transcript asset commits are ahead of the branch merge base; the ignored SDD workspace and `tmp/` remain uncommitted.
 
-- [ ] **Step 3: Push the verified main branch**
+- [ ] **Step 3: Record verification evidence for final review**
 
 ```powershell
-git push origin main
+git rev-parse HEAD
+git status --short --branch
 ```
 
-Expected: Git reports `main -> main` without rejection.
+Expected: the feature branch has no tracked working-tree changes and its HEAD identifies the exact revision covered by `npm run check`.
 
-- [ ] **Step 4: Verify the published bytes and link**
+## Post-SDD Integration and Publication
+
+After all three tasks pass their scoped reviews and the final whole-branch
+review is clean:
+
+1. Use `superpowers:finishing-a-development-branch`.
+2. Merge `codex/transcript-original` into local `main`.
+3. Run `npm run check` again from the exact merged `main` revision.
+4. Push `main` to `origin` only after the merged verification passes.
+5. Wait for the GitHub Pages workflow to complete.
+6. Verify the published PDF hash and page-3 link using the checks below.
+
+### Published-Site Checks
 
 After the GitHub Pages workflow completes, run:
 
