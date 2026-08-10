@@ -16,7 +16,8 @@ const passthroughAssets = [
   "assets/avatar.jpg",
   "assets/projects/moderation-api.png",
   "assets/social-preview.png",
-  "assets/resume/resume.pdf"
+  "assets/resume/resume.pdf",
+  "assets/transcript/transcript.pdf"
 ];
 
 function sha256(path) {
