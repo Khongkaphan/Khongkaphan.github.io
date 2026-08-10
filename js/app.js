@@ -2,7 +2,7 @@ import { getText, portfolioContent } from "./content.js";
 import { initializeLanguage } from "./language.js";
 import { initializeNavigation } from "./navigation.js";
 import { initializeReveal } from "./reveal.js";
-import { initializeResume } from "./resume.js";
+import { initializeTranscript } from "./transcript.js";
 
 function renderSkills() {
   const groups = document.querySelector("[data-skills-groups]");
@@ -154,6 +154,6 @@ function renderProjects() {
 renderSkills();
 renderProjects();
 initializeLanguage();
-initializeResume();
+initializeTranscript();
 initializeNavigation();
 initializeReveal();

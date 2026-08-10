@@ -265,68 +265,68 @@ test("mobile navigation and language controls have 44px touch targets", async ({
   }
 });
 
-test("resume module owns unavailable and configured bilingual states", async ({ page }) => {
+test("Transcript module owns unavailable and configured bilingual states", async ({ page }) => {
   await page.route("**/js/content.js", async (route) => {
     const response = await route.fetch();
     const body = await response.text();
     await route.fulfill({
       response,
       body: body.replace(
-        'resume: { href: "/assets/resume/resume.pdf" }',
-        "resume: { href: null }"
+        'transcript: { href: "/assets/transcript/transcript.pdf" }',
+        "transcript: { href: null }"
       )
     });
   });
   await page.goto(developmentURL);
 
   const moduleExports = await page.evaluate(async () =>
-    Object.keys(await import("/js/resume.js")).sort()
+    Object.keys(await import("/js/transcript.js")).sort()
   );
-  expect(moduleExports).toEqual(["initializeResume", "updateResume"]);
+  expect(moduleExports).toEqual(["initializeTranscript", "updateTranscript"]);
 
-  await expect(page.getByRole("button", { name: "ดาวน์โหลด Resume" }))
+  await expect(page.getByRole("button", { name: "Transcript" }))
     .toBeDisabled();
-  await expect(page.getByText("ยังไม่ได้เพิ่มไฟล์ Resume")).toBeVisible();
+  await expect(page.getByText("ยังไม่ได้เพิ่มไฟล์ Transcript")).toBeVisible();
 
   await page.evaluate(async () => {
     const { portfolioContent } = await import("/js/content.js");
-    const { updateResume } = await import("/js/resume.js");
-    portfolioContent.resume.href = "/assets/resume/resume.pdf";
-    updateResume("en");
-    updateResume("en");
+    const { updateTranscript } = await import("/js/transcript.js");
+    portfolioContent.transcript.href = "/assets/transcript/transcript.pdf";
+    updateTranscript("en");
+    updateTranscript("en");
   });
 
-  const control = page.locator("[data-resume-link]");
+  const control = page.locator("[data-transcript-link]");
   await expect(control).toHaveCount(1);
-  await expect(control).toHaveText("Download Resume");
-  await expect(control).toHaveAttribute("href", "/assets/resume/resume.pdf");
+  await expect(control).toHaveText("Transcript");
+  await expect(control).toHaveAttribute("href", "/assets/transcript/transcript.pdf");
   await expect(control).toHaveAttribute("target", "_blank");
   await expect(control).toHaveAttribute("rel", "noopener noreferrer");
 
   await page.evaluate(async () => {
-    const { updateResume } = await import("/js/resume.js");
-    updateResume("th");
+    const { updateTranscript } = await import("/js/transcript.js");
+    updateTranscript("th");
   });
-  await expect(control).toHaveText("ดาวน์โหลด Resume");
+  await expect(control).toHaveText("Transcript");
 });
 
-test("exposes the configured Resume in Thai and English", async ({ page }) => {
+test("exposes the configured Transcript in Thai and English", async ({ page }) => {
   await page.goto("/");
 
-  const control = page.locator("[data-resume-link]");
-  await expect(control).toHaveText("ดาวน์โหลด Resume");
-  await expect(control).toHaveAttribute("href", "/assets/resume/resume.pdf");
+  const control = page.locator("[data-transcript-link]");
+  await expect(control).toHaveText("Transcript");
+  await expect(control).toHaveAttribute("href", "/assets/transcript/transcript.pdf");
   await expect(control).toHaveAttribute("target", "_blank");
   await expect(control).toHaveAttribute("rel", "noopener noreferrer");
-  await expect(page.locator("[data-resume-status]")).toBeEmpty();
+  await expect(page.locator("[data-transcript-status]")).toBeEmpty();
 
-  const response = await page.request.get("/assets/resume/resume.pdf");
+  const response = await page.request.get("/assets/transcript/transcript.pdf");
   expect(response.ok()).toBe(true);
   expect(response.headers()["content-type"]).toContain("application/pdf");
   expect((await response.body()).subarray(0, 5).toString()).toBe("%PDF-");
 
   await page.getByRole("button", { name: "EN" }).click();
-  await expect(control).toHaveText("Download Resume");
+  await expect(control).toHaveText("Transcript");
 });
 
 test("does not expose the removed certificate feature", async ({ page }) => {
@@ -402,10 +402,10 @@ test("Thai static fallback contains the complete Objexify case study and anchor 
   await expect(page.getByText("หน้าที่ของผม", { exact: true })).toBeVisible();
   await expect(page.locator("[data-project-list] li")).toHaveCount(15);
   await expect(page.getByText("StockFlow", { exact: false })).toHaveCount(0);
-  await expect(page.locator("[data-resume-link]")).toHaveAttribute(
-    "href", "/assets/resume/resume.pdf"
+  await expect(page.locator("[data-transcript-link]")).toHaveAttribute(
+    "href", "/assets/transcript/transcript.pdf"
   );
-  await expect(page.locator("[data-resume-status]")).toBeEmpty();
+  await expect(page.locator("[data-transcript-status]")).toBeEmpty();
   const projectsHtml = await page.locator("[data-project-list]").evaluate(
     (element) => element.innerHTML
   );

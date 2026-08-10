@@ -13,7 +13,7 @@ const th = {
   "hero.role": "Software Developer Intern",
   "hero.summary": "นักศึกษาวิทยาการคอมพิวเตอร์ สนใจการพัฒนาซอฟต์แวร์ ระบบเว็บ และการประยุกต์ใช้ AI",
   "hero.projects": "ดูผลงาน",
-  "hero.resume": "ดาวน์โหลด Resume",
+  "hero.transcript": "Transcript",
   "hero.contact": "ติดต่อฉัน",
   "about.title": "เกี่ยวกับฉัน",
   "about.body": "กำลังศึกษาระดับปริญญาตรี สาขาวิทยาการคอมพิวเตอร์ มหาวิทยาลัยพะเยา สนใจงานด้านการพัฒนาซอฟต์แวร์และระบบเว็บ มีประสบการณ์จากโครงงานกลุ่มด้าน AI และ Computer Vision รวมถึงการพัฒนาเว็บแอปพลิเคชันแบบ Full-stack",
@@ -47,7 +47,7 @@ const th = {
   "contact.email": "อีเมล",
   "contact.github": "GitHub",
   "footer.copy": "Khongkaphan Kiawsod",
-  "resume.unavailable": "ยังไม่ได้เพิ่มไฟล์ Resume"
+  "transcript.unavailable": "ยังไม่ได้เพิ่มไฟล์ Transcript"
 };
 
 const en = {
@@ -65,7 +65,7 @@ const en = {
   "hero.role": "Software Developer Intern",
   "hero.summary": "Computer Science student interested in software development, web systems, and applied AI.",
   "hero.projects": "View Projects",
-  "hero.resume": "Download Resume",
+  "hero.transcript": "Transcript",
   "hero.contact": "Contact Me",
   "about.title": "About Me",
   "about.body": "I am pursuing a bachelor's degree in Computer Science at the University of Phayao. My experience includes a group project in AI and Computer Vision and an individual Full-stack web application.",
@@ -99,7 +99,7 @@ const en = {
   "contact.email": "Email",
   "contact.github": "GitHub",
   "footer.copy": "Khongkaphan Kiawsod",
-  "resume.unavailable": "Resume file has not been added"
+  "transcript.unavailable": "Transcript file has not been added"
 };
 
 export const portfolioContent = {
@@ -164,7 +164,7 @@ export const portfolioContent = {
       github: null
     }
   ],
-  resume: { href: "/assets/resume/resume.pdf" },
+  transcript: { href: "/assets/transcript/transcript.pdf" },
   contact: {
     phone: "0932795834",
     email: "ball.56110m@gmail.com",

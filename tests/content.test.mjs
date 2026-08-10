@@ -47,13 +47,26 @@ test("Objexify copy keeps system capability separate from personal contribution"
   );
 });
 
-test("Resume is configured and the certificate feature is absent", () => {
-  assert.equal(portfolioContent.resume.href, "/assets/resume/resume.pdf");
-  assert.equal("certificates" in portfolioContent, false);
+test("Transcript is configured and Resume content is absent", () => {
+  assert.equal(
+    portfolioContent.transcript.href,
+    "/assets/transcript/transcript.pdf"
+  );
+  assert.equal("resume" in portfolioContent, false);
+  assert.equal(getText("th", "hero.transcript"), "Transcript");
+  assert.equal(getText("en", "hero.transcript"), "Transcript");
+  assert.equal(
+    getText("th", "transcript.unavailable"),
+    "ยังไม่ได้เพิ่มไฟล์ Transcript"
+  );
+  assert.equal(
+    getText("en", "transcript.unavailable"),
+    "Transcript file has not been added"
+  );
+
   for (const language of ["th", "en"]) {
-    const certificateKeys = Object.keys(portfolioContent.translations[language])
-      .filter((key) => key.toLowerCase().includes("certificate"));
-    assert.deepEqual(certificateKeys, []);
+    const keys = Object.keys(portfolioContent.translations[language]);
+    assert.equal(keys.some((key) => key.toLowerCase().includes("resume")), false);
   }
 });
 
