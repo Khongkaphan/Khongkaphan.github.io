@@ -15,7 +15,6 @@ const distRoot = join(projectRoot, "dist");
 const passthroughAssets = [
   "assets/avatar.jpg",
   "assets/projects/moderation-api.png",
-  "assets/projects/stockflow-dashboard.png",
   "assets/social-preview.png",
   "assets/resume/resume.pdf"
 ];
@@ -47,6 +46,12 @@ test("project assets are delivered byte-for-byte through Vite public passthrough
       `${asset} must pass through without transformation`
     );
   }
+});
+
+test("removed StockFlow asset is absent from source and build", () => {
+  const removed = "assets/projects/stockflow-dashboard.png";
+  assert.equal(existsSync(join(publicRoot, removed)), false);
+  assert.equal(existsSync(join(distRoot, removed)), false);
 });
 
 test("future Resume public directory remains tracked", () => {

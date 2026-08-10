@@ -42,10 +42,6 @@ Vite, HTML, CSS, and JavaScript.
 ### Replace a project image
 
 Copy the new file into `public/assets/projects`, then update the matching `src`
-in `renderProjects()` inside `js/app.js`. Do not label a generated visual as a
-real project screenshot.
-
-### Add the StockFlow repository
-
-Open `js/content.js`, find the project with `id: "stockflow"`, and replace
-`github: null` with the public GitHub repository URL.
+in `renderProjects()` inside `js/app.js`. The current Objexify image is
+`public/assets/projects/moderation-api.png`. Do not label a generated visual as
+a real project screenshot.
