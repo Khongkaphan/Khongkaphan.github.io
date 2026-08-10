@@ -405,6 +405,7 @@ test("Thai static fallback contains the complete Objexify case study and anchor 
   await expect(page.locator("[data-resume-link]")).toHaveAttribute(
     "href", "/assets/resume/resume.pdf"
   );
+  await expect(page.locator("[data-resume-status]")).toBeEmpty();
   const projectsHtml = await page.locator("[data-project-list]").evaluate(
     (element) => element.innerHTML
   );
