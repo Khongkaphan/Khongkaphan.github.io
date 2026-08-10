@@ -6,7 +6,19 @@ export function updateResume(language) {
   const href = portfolioContent.resume.href;
 
   if (!href) {
-    if (control instanceof HTMLButtonElement) control.disabled = true;
+    if (control instanceof HTMLAnchorElement) {
+      const button = document.createElement("button");
+      button.className = control.className;
+      button.type = "button";
+      button.dataset.resumeLink = "";
+      button.dataset.i18n = "hero.resume";
+      button.disabled = true;
+      button.textContent = getText(language, "hero.resume");
+      control.replaceWith(button);
+    } else if (control instanceof HTMLButtonElement) {
+      control.disabled = true;
+      control.textContent = getText(language, "hero.resume");
+    }
     status.textContent = getText(language, "resume.unavailable");
     return;
   }
