@@ -272,7 +272,7 @@ test("Transcript module owns unavailable and configured bilingual states", async
     await route.fulfill({
       response,
       body: body.replace(
-        'transcript: { href: "/assets/transcript/transcript.pdf" }',
+        'transcript: { href: "/assets/transcript/transcript.pdf#page=3" }',
         "transcript: { href: null }"
       )
     });
@@ -291,7 +291,7 @@ test("Transcript module owns unavailable and configured bilingual states", async
   await page.evaluate(async () => {
     const { portfolioContent } = await import("/js/content.js");
     const { updateTranscript } = await import("/js/transcript.js");
-    portfolioContent.transcript.href = "/assets/transcript/transcript.pdf";
+    portfolioContent.transcript.href = "/assets/transcript/transcript.pdf#page=3";
     updateTranscript("en");
     updateTranscript("en");
   });
@@ -299,7 +299,10 @@ test("Transcript module owns unavailable and configured bilingual states", async
   const control = page.locator("[data-transcript-link]");
   await expect(control).toHaveCount(1);
   await expect(control).toHaveText("Transcript");
-  await expect(control).toHaveAttribute("href", "/assets/transcript/transcript.pdf");
+  await expect(control).toHaveAttribute(
+    "href",
+    "/assets/transcript/transcript.pdf#page=3"
+  );
   await expect(control).toHaveAttribute("target", "_blank");
   await expect(control).toHaveAttribute("rel", "noopener noreferrer");
 
@@ -315,7 +318,10 @@ test("exposes the configured Transcript in Thai and English", async ({ page }) =
 
   const control = page.locator("[data-transcript-link]");
   await expect(control).toHaveText("Transcript");
-  await expect(control).toHaveAttribute("href", "/assets/transcript/transcript.pdf");
+  await expect(control).toHaveAttribute(
+    "href",
+    "/assets/transcript/transcript.pdf#page=3"
+  );
   await expect(control).toHaveAttribute("target", "_blank");
   await expect(control).toHaveAttribute("rel", "noopener noreferrer");
   await expect(page.locator("[data-transcript-status]")).toBeEmpty();
@@ -403,7 +409,7 @@ test("Thai static fallback contains the complete Objexify case study and anchor 
   await expect(page.locator("[data-project-list] li")).toHaveCount(15);
   await expect(page.getByText("StockFlow", { exact: false })).toHaveCount(0);
   await expect(page.locator("[data-transcript-link]")).toHaveAttribute(
-    "href", "/assets/transcript/transcript.pdf"
+    "href", "/assets/transcript/transcript.pdf#page=3"
   );
   await expect(page.locator("[data-transcript-status]")).toBeEmpty();
   const projectsHtml = await page.locator("[data-project-list]").evaluate(

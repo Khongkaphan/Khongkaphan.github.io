@@ -164,7 +164,7 @@ export const portfolioContent = {
       github: null
     }
   ],
-  transcript: { href: "/assets/transcript/transcript.pdf" },
+  transcript: { href: "/assets/transcript/transcript.pdf#page=3" },
   contact: {
     phone: "0932795834",
     email: "ball.56110m@gmail.com",
