@@ -437,10 +437,10 @@ Expected: all asset tests PASS; `dist/assets/transcript/transcript.pdf` exists a
 Run:
 
 ```powershell
-rg -n -i "data-resume|assets/resume/resume\.pdf|portfolioContent\.resume|hero\.resume|resume\.unavailable|js/resume\.js|Add a Resume|Download Resume|ดาวน์โหลด Resume" index.html js tests README.md public
+rg -n -i "data-resume|assets/resume/resume\.pdf|portfolioContent\.resume|hero\.resume|resume\.unavailable|js/resume\.js|Add a Resume|Download Resume|ดาวน์โหลด Resume" index.html js README.md public
 ```
 
-Expected: no matches. The CSS class `.resume-status` is intentionally retained as presentation-only and is excluded from this behavioral scan.
+Expected: no matches. Tests intentionally retain removed Resume paths in absence assertions and are excluded from this production-source scan. The CSS class `.resume-status` is intentionally retained as presentation-only and is excluded from this behavioral scan.
 
 - [ ] **Step 7: Revalidate and render the final PDF asset**
 
