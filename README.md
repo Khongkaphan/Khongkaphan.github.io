@@ -17,7 +17,7 @@ Vite, HTML, CSS, and JavaScript.
 - `npm run test:assets` checks production asset references and public
   passthrough integrity after a build.
 - `npm run test:e2e` runs the Playwright browser tests against the production
-  preview, with a separate development server only for the Resume module
+  preview, with a separate development server only for the Transcript module
   fixture.
 
 ## Publish to GitHub Pages
@@ -32,12 +32,13 @@ Vite, HTML, CSS, and JavaScript.
 
 ## Update personal content
 
-### Add a Resume
+### Replace the Transcript
 
-1. Copy the PDF to `public/assets/resume/resume.pdf`.
-2. Open `js/content.js`.
-3. Change `resume: { href: null }` to
-   `resume: { href: "/assets/resume/resume.pdf" }`.
+1. Extract the approved source page as a one-page PDF.
+2. Replace `public/assets/transcript/transcript.pdf`.
+3. Keep `transcript: { href: "/assets/transcript/transcript.pdf" }` in
+   `js/content.js`.
+4. Run `npm run check` before publishing.
 
 ### Replace a project image
 

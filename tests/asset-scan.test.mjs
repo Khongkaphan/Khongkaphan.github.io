@@ -16,7 +16,6 @@ const passthroughAssets = [
   "assets/avatar.jpg",
   "assets/projects/moderation-api.png",
   "assets/social-preview.png",
-  "assets/resume/resume.pdf",
   "assets/transcript/transcript.pdf"
 ];
 
@@ -55,17 +54,18 @@ test("removed StockFlow asset is absent from source and build", () => {
   assert.equal(existsSync(join(distRoot, removed)), false);
 });
 
-test("future Resume public directory remains tracked", () => {
-  const marker = "assets/resume/.gitkeep";
-  assert.ok(
-    existsSync(join(publicRoot, marker)),
-    `public/${marker} must exist`
-  );
-  assert.equal(
-    existsSync(join(publicRoot, "assets/certificates")),
-    false,
-    "the removed certificate feature must not leave a public directory"
-  );
+test("removed Resume assets are absent from source and build", () => {
+  for (const removed of [
+    "assets/resume/resume.pdf",
+    "assets/resume/.gitkeep"
+  ]) {
+    assert.equal(existsSync(join(publicRoot, removed)), false);
+    assert.equal(existsSync(join(distRoot, removed)), false);
+  }
+});
+
+test("the removed certificate feature leaves no public directory", () => {
+  assert.equal(existsSync(join(publicRoot, "assets/certificates")), false);
 });
 
 test("every absolute production asset reference resolves inside dist", () => {
