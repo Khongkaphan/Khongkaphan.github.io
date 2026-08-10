@@ -405,6 +405,20 @@ test("Thai static fallback contains the complete Objexify case study and anchor 
   await expect(page.locator("[data-resume-link]")).toHaveAttribute(
     "href", "/assets/resume/resume.pdf"
   );
+  const projectsHtml = await page.locator("[data-project-list]").evaluate(
+    (element) => element.innerHTML
+  );
+  for (const removedContent of [
+    "StockFlow",
+    "stockflow-dashboard.png",
+    "Next.js",
+    "TypeScript",
+    "PostgreSQL",
+    "Prisma ORM",
+    "https://github.com/Phurin123/Project-Api-detect_inappropriate-main"
+  ]) {
+    expect(projectsHtml).not.toContain(removedContent);
+  }
 
   await navigation.getByRole("link", { name: "ติดต่อ", exact: true }).click();
   await expect(page).toHaveURL(/#contact$/);
