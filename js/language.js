@@ -35,19 +35,32 @@ export function setLanguage(language) {
     );
   });
   portfolioContent.projects.forEach((project) => {
-    document.querySelector(`[data-project-title="${project.id}"]`).textContent =
-      getText(selected, project.titleKey);
-    document.querySelector(
-      `[data-project-description="${project.id}"]`
-    ).textContent = getText(selected, project.descriptionKey);
-    document.querySelector(
-      `[data-project-responsibility="${project.id}"]`
-    ).textContent = getText(selected, project.responsibilityKey);
+    const updateText = (selector, key) => {
+      const element = document.querySelector(selector);
+      if (element) element.textContent = getText(selected, key);
+    };
+
+    updateText(`[data-project-title="${project.id}"]`, project.titleKey);
+    updateText(`[data-project-type="${project.id}"]`, project.typeKey);
+    updateText(
+      `[data-project-capability-label="${project.id}"]`,
+      project.capabilityLabelKey
+    );
+    updateText(`[data-project-capability="${project.id}"]`, project.capabilityKey);
+    updateText(
+      `[data-project-contribution-label="${project.id}"]`,
+      project.contributionLabelKey
+    );
+    document.querySelectorAll(
+      `[data-project-contribution="${project.id}"]`
+    ).forEach((item) => {
+      item.textContent = getText(selected, item.dataset.i18nKey);
+    });
 
     const image = document.querySelector(`[data-project-image="${project.id}"]`);
     const alt = getText(selected, project.altKey);
     if (image instanceof HTMLImageElement) image.alt = alt;
-    else image.setAttribute("aria-label", alt);
+    else if (image) image.setAttribute("aria-label", alt);
   });
   document.querySelectorAll("[data-language]").forEach((button) => {
     button.setAttribute(

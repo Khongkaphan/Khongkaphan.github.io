@@ -63,8 +63,7 @@ function replaceFailedProjectImage(image, project) {
 }
 
 const PROJECT_IMAGE_SOURCES = Object.freeze({
-  "moderation-api": "/assets/projects/moderation-api.png",
-  stockflow: "/assets/projects/stockflow-dashboard.png"
+  "moderation-api": "/assets/projects/moderation-api.png"
 });
 
 function renderProjects() {
@@ -75,33 +74,73 @@ function renderProjects() {
       article.className = "project-row reveal";
       article.dataset.project = project.id;
       const language = portfolioContent.defaultLanguage;
-      const alt = getText(language, project.altKey);
-      const visual = `<img src="${PROJECT_IMAGE_SOURCES[project.id]}"
-          data-project-image="${project.id}" alt="${alt}">`;
-      article.innerHTML = `
-        ${visual}
-        <div>
-          <h3 data-project-title="${project.id}"></h3>
-          <p data-project-description="${project.id}"></p>
-          <p data-project-responsibility="${project.id}"></p>
-          <ul class="tech-list">${project.technologies.map(
-            (technology) => `<li>${technology}</li>`
-          ).join("")}</ul>
-          ${project.github
-            ? `<a class="text-link" href="${project.github}" target="_blank"
-                rel="noopener noreferrer">GitHub</a>`
-            : ""}
-        </div>`;
-      article.querySelector(`[data-project-title="${project.id}"]`).textContent =
-        getText(language, project.titleKey);
-      article.querySelector(
-        `[data-project-description="${project.id}"]`
-      ).textContent = getText(language, project.descriptionKey);
-      article.querySelector(
-        `[data-project-responsibility="${project.id}"]`
-      ).textContent = getText(language, project.responsibilityKey);
+      const projectImage = document.createElement("img");
+      projectImage.src = PROJECT_IMAGE_SOURCES[project.id];
+      projectImage.dataset.projectImage = project.id;
+      projectImage.alt = getText(language, project.altKey);
 
-      const projectImage = article.querySelector("img[data-project-image]");
+      const content = document.createElement("div");
+      const type = document.createElement("p");
+      type.className = "project-type";
+      type.dataset.projectType = project.id;
+      type.textContent = getText(language, project.typeKey);
+
+      const title = document.createElement("h3");
+      title.dataset.projectTitle = project.id;
+      title.textContent = getText(language, project.titleKey);
+
+      const capabilitySection = document.createElement("section");
+      capabilitySection.className = "project-detail";
+      const capabilityLabel = document.createElement("h4");
+      capabilityLabel.dataset.projectCapabilityLabel = project.id;
+      capabilityLabel.textContent = getText(language, project.capabilityLabelKey);
+      const capability = document.createElement("p");
+      capability.dataset.projectCapability = project.id;
+      capability.textContent = getText(language, project.capabilityKey);
+      capabilitySection.append(capabilityLabel, capability);
+
+      const contributionSection = document.createElement("section");
+      contributionSection.className = "project-detail";
+      const contributionLabel = document.createElement("h4");
+      contributionLabel.dataset.projectContributionLabel = project.id;
+      contributionLabel.textContent = getText(language, project.contributionLabelKey);
+      const contributionList = document.createElement("ul");
+      contributionList.className = "contribution-list";
+      for (const key of project.contributionKeys) {
+        const item = document.createElement("li");
+        item.dataset.projectContribution = project.id;
+        item.dataset.i18nKey = key;
+        item.textContent = getText(language, key);
+        contributionList.append(item);
+      }
+      contributionSection.append(contributionLabel, contributionList);
+
+      const technologyList = document.createElement("ul");
+      technologyList.className = "tech-list";
+      for (const technology of project.technologies) {
+        const item = document.createElement("li");
+        item.textContent = technology;
+        technologyList.append(item);
+      }
+
+      content.append(
+        type,
+        title,
+        capabilitySection,
+        contributionSection,
+        technologyList
+      );
+      if (project.github) {
+        const link = document.createElement("a");
+        link.className = "text-link";
+        link.href = project.github;
+        link.target = "_blank";
+        link.rel = "noopener noreferrer";
+        link.textContent = getText(language, "project.github");
+        content.append(link);
+      }
+      article.append(projectImage, content);
+
       projectImage?.addEventListener(
         "error",
         () => replaceFailedProjectImage(projectImage, project),

@@ -12,7 +12,7 @@ const sectionIds = [
 
 async function expectProjectImagesToDecode(page) {
   const imageResults = await page.locator(
-    'img[data-project-image="moderation-api"], img[data-project-image="stockflow"]'
+    'img[data-project-image="moderation-api"]'
   ).evaluateAll(async (images) =>
     Promise.all(images.map(async (image) => {
       await image.decode();
@@ -24,7 +24,7 @@ async function expectProjectImagesToDecode(page) {
     }))
   );
 
-  expect(imageResults).toHaveLength(2);
+  expect(imageResults).toHaveLength(1);
   for (const result of imageResults) {
     expect(result.complete).toBe(true);
     expect(result.naturalWidth).toBeGreaterThan(0);
@@ -57,12 +57,10 @@ test("renders the Thai portfolio with approved sections", async ({ page }) => {
   }
 });
 
-test("production project images keep decoding across navigations", async ({ page }) => {
+test("production project image keeps decoding across navigations", async ({ page }) => {
   await page.goto("/");
   await expect(page.getByRole("img", { name: "Khongkaphan Kiawsod" }))
     .toHaveAttribute("src", /assets\/avatar\.jpg$/);
-  await expect(page.getByRole("img", { name: /Dashboard.*StockFlow|StockFlow.*Dashboard/ }))
-    .toHaveAttribute("src", /stockflow-dashboard\.png$/);
   const moderationImage = page.locator(
     'img[data-project-image="moderation-api"]'
   );
@@ -111,6 +109,34 @@ test("switches between Thai and English without reloading", async ({ page }) => 
       exact: true
     })
   ).toBeVisible();
+});
+
+test("renders one bilingual Objexify case study without project links", async ({ page }) => {
+  await page.goto("/");
+  const project = page.locator('[data-project="moderation-api"]');
+
+  await expect(page.locator("[data-project]")).toHaveCount(1);
+  await expect(project.locator("[data-project-type]")).toHaveText("โครงการจบแบบกลุ่ม");
+  await expect(project.locator("[data-project-capability-label]")).toHaveText(
+    "ความสามารถของระบบ"
+  );
+  await expect(project.locator("[data-project-contribution-label]")).toHaveText(
+    "หน้าที่ของผม"
+  );
+  await expect(project.locator("[data-project-contribution]")).toHaveCount(5);
+  await expect(project.getByRole("link")).toHaveCount(0);
+  await expect(page.getByText("StockFlow", { exact: false })).toHaveCount(0);
+
+  await page.getByRole("button", { name: "EN" }).click();
+  await expect(project.locator("[data-project-type]")).toHaveText("Group senior project");
+  await expect(project.locator("[data-project-capability-label]")).toHaveText(
+    "System capability"
+  );
+  await expect(project.locator("[data-project-contribution-label]")).toHaveText(
+    "My contribution"
+  );
+  await expect(project.locator("[data-project-contribution]").first())
+    .toContainText("four YOLO11m models");
 });
 
 test("translates accessible interface labels in both languages", async ({ page }) => {
@@ -163,15 +189,9 @@ test("renders exactly four semantic bilingual skill groups", async ({ page }) =>
   await expect(groups.locator("li")).toHaveText([
     "Python",
     "JavaScript",
-    "TypeScript",
     "HTML / CSS",
-    "Next.js",
-    "React",
-    "Tailwind CSS",
     "PyTorch",
     "Ultralytics (YOLO)",
-    "PostgreSQL",
-    "Prisma ORM",
     "REST API",
     "Git / GitHub",
     "Postman",
@@ -329,7 +349,7 @@ test("does not expose the removed certificate feature", async ({ page }) => {
   await expect(page.getByText("Certificates", { exact: true })).toHaveCount(0);
 });
 
-test("Thai fallback stays visible and anchor navigation works when app.js is aborted", async ({ page }) => {
+test("Thai static fallback contains the complete Objexify case study and anchor navigation works when app.js is aborted", async ({ page }) => {
   await page.setViewportSize({ width: 390, height: 844 });
   await page.route("**/*", async (route) => {
     const request = route.request();
@@ -376,40 +396,20 @@ test("Thai fallback stays visible and anchor navigation works when app.js is abo
     "ฐานข้อมูลและ API",
     "เครื่องมือ"
   ]);
-  await expect(fallbackSkillGroups.locator("li")).toHaveCount(18);
+  await expect(fallbackSkillGroups.locator("li")).toHaveCount(12);
+  await expect(page.locator("[data-project-list] article")).toHaveCount(1);
+  await expect(page.getByText("ความสามารถของระบบ", { exact: true })).toBeVisible();
+  await expect(page.getByText("หน้าที่ของผม", { exact: true })).toBeVisible();
+  await expect(page.locator("[data-project-list] li")).toHaveCount(15);
+  await expect(page.getByText("StockFlow", { exact: false })).toHaveCount(0);
+  await expect(page.locator("[data-resume-link]")).toHaveAttribute(
+    "href", "/assets/resume/resume.pdf"
+  );
 
   await navigation.getByRole("link", { name: "ติดต่อ", exact: true }).click();
   await expect(page).toHaveURL(/#contact$/);
   await expect(page.locator("html")).not.toHaveClass(/navigation-ready/);
   await expect(page.locator("html")).not.toHaveClass(/reveal-ready/);
-});
-
-test("aborted StockFlow image becomes a localized accessible placeholder", async ({ page }) => {
-  await page.route(
-    "**/assets/projects/stockflow-dashboard.png",
-    (route) => route.abort()
-  );
-  await page.goto("/");
-
-  const placeholder = page.locator('[data-project-image="stockflow"]');
-  await expect(placeholder).toHaveClass(/project-image-fallback/);
-  await expect(placeholder).toHaveAttribute("role", "img");
-  await expect(placeholder).toHaveAttribute(
-    "aria-label",
-    "หน้าจอ Dashboard ของระบบ StockFlow"
-  );
-  await expect(
-    placeholder.locator("[data-project-image-status]")
-  ).toHaveText("ไม่สามารถแสดงภาพโครงการได้");
-
-  await page.getByRole("button", { name: "EN" }).click();
-  await expect(placeholder).toHaveAttribute(
-    "aria-label",
-    "StockFlow Dashboard screen"
-  );
-  await expect(
-    placeholder.locator("[data-project-image-status]")
-  ).toHaveText("Project image unavailable");
 });
 
 test("aborted moderation image becomes a localized accessible placeholder", async ({ page }) => {
@@ -422,7 +422,22 @@ test("aborted moderation image becomes a localized accessible placeholder", asyn
   const placeholder = page.locator('[data-project-image="moderation-api"]');
   await expect(placeholder).toHaveClass(/project-image-fallback/);
   await expect(placeholder).toHaveAttribute("role", "img");
-  await expect(placeholder).toContainText(/ไม่สามารถแสดงภาพโครงการได้|Project image unavailable/);
+  await expect(placeholder).toHaveAttribute(
+    "aria-label",
+    "ภาพหน้าจอระบบ Objexify สำหรับตรวจจับวัตถุไม่เหมาะสม"
+  );
+  await expect(placeholder.locator("[data-project-image-status]")).toHaveText(
+    "ไม่สามารถแสดงภาพโครงการได้"
+  );
+
+  await page.getByRole("button", { name: "EN" }).click();
+  await expect(placeholder).toHaveAttribute(
+    "aria-label",
+    "Objexify inappropriate content detection system screen"
+  );
+  await expect(placeholder.locator("[data-project-image-status]")).toHaveText(
+    "Project image unavailable"
+  );
 });
 
 test("reduced motion reveals every section without animation dependence", async ({ page }) => {
@@ -473,7 +488,7 @@ test("has no horizontal overflow on representative viewports", async ({ page }) 
   }
 });
 
-test("contact and external project links are safe", async ({ page }) => {
+test("contact links are safe", async ({ page }) => {
   await page.goto("/");
   await expect(page.getByRole("link", { name: /GitHub/ }).first())
     .toHaveAttribute("rel", /noopener/);
@@ -493,7 +508,6 @@ test("serves public assets from deployment-stable URLs", async ({ request }) => 
   for (const [path, contentType] of [
     ["/assets/avatar.jpg", "image/jpeg"],
     ["/assets/projects/moderation-api.png", "image/png"],
-    ["/assets/projects/stockflow-dashboard.png", "image/png"],
     ["/assets/social-preview.png", "image/png"]
   ]) {
     const response = await request.get(path);

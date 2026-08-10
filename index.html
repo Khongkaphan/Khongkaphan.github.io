@@ -51,8 +51,8 @@
             <p data-i18n="hero.summary">นักศึกษาวิทยาการคอมพิวเตอร์ สนใจการพัฒนาซอฟต์แวร์ ระบบเว็บ และการประยุกต์ใช้ AI</p>
             <div class="button-row">
               <a class="button primary" href="#projects" data-i18n="hero.projects">ดูผลงาน</a>
-              <button class="button secondary" type="button" data-resume-link disabled
-                data-i18n="hero.resume">ดาวน์โหลด Resume</button>
+              <a class="button secondary" data-resume-link href="/assets/resume/resume.pdf"
+                target="_blank" rel="noopener noreferrer" data-i18n="hero.resume">ดาวน์โหลด Resume</a>
               <a class="button ghost" href="#contact" data-i18n="hero.contact">ติดต่อฉัน</a>
             </div>
             <p class="resume-status" data-resume-status aria-live="polite">ยังไม่ได้เพิ่มไฟล์ Resume</p>
@@ -83,16 +83,12 @@
               <ul class="skills-list">
                 <li class="skill-item">Python</li>
                 <li class="skill-item">JavaScript</li>
-                <li class="skill-item">TypeScript</li>
                 <li class="skill-item">HTML / CSS</li>
               </ul>
             </section>
             <section class="skill-group" data-skill-group="frameworks-libraries">
               <h3 data-i18n="skills.group.frameworksLibraries">เฟรมเวิร์กและไลบรารี</h3>
               <ul class="skills-list">
-                <li class="skill-item">Next.js</li>
-                <li class="skill-item">React</li>
-                <li class="skill-item">Tailwind CSS</li>
                 <li class="skill-item">PyTorch</li>
                 <li class="skill-item">Ultralytics (YOLO)</li>
               </ul>
@@ -100,8 +96,6 @@
             <section class="skill-group" data-skill-group="database-api">
               <h3 data-i18n="skills.group.databaseApi">ฐานข้อมูลและ API</h3>
               <ul class="skills-list">
-                <li class="skill-item">PostgreSQL</li>
-                <li class="skill-item">Prisma ORM</li>
                 <li class="skill-item">REST API</li>
               </ul>
             </section>
@@ -138,6 +132,33 @@
           <p class="eyebrow">PROJECTS</p>
           <h2 data-i18n="projects.title">ผลงาน</h2>
           <div class="projects-list" data-project-list>
+            <article class="project-row" data-project="moderation-api">
+              <img src="/assets/projects/moderation-api.png"
+                data-project-image="moderation-api"
+                alt="ภาพหน้าจอระบบ Objexify สำหรับตรวจจับวัตถุไม่เหมาะสม">
+              <div>
+                <p class="project-type" data-project-type="moderation-api">โครงการจบแบบกลุ่ม</p>
+                <h3 data-project-title="moderation-api">Objexify — บริการ API สำหรับตรวจจับวัตถุไม่เหมาะสม</h3>
+                <section class="project-detail">
+                  <h4 data-project-capability-label="moderation-api">ความสามารถของระบบ</h4>
+                  <p data-project-capability="moderation-api">ระบบ AI สำหรับตรวจจับวัตถุไม่เหมาะสมในภาพและวิดีโอ ได้แก่ ภาพโป๊เปลือย อาวุธ บุหรี่ และความรุนแรง โดยให้บริการผลการตรวจจับและตำแหน่ง Bounding Box ผ่าน API เพื่อให้ระบบอื่นนำไปใช้งานต่อได้</p>
+                </section>
+                <section class="project-detail">
+                  <h4 data-project-contribution-label="moderation-api">หน้าที่ของผม</h4>
+                  <ul class="contribution-list">
+                    <li data-project-contribution="moderation-api" data-i18n-key="project.moderation.contribution.dataset">เตรียมและปรับปรุง Dataset ทำ Label และฝึกสอนโมเดล YOLO11m จำนวน 4 โมเดล</li>
+                    <li data-project-contribution="moderation-api" data-i18n-key="project.moderation.contribution.evaluation">ประเมินโมเดลด้วย mAP50-95, Precision และ Recall พร้อมทดลองเพิ่ม Background Images เพื่อลดการตรวจจับผิดพลาด</li>
+                    <li data-project-contribution="moderation-api" data-i18n-key="project.moderation.contribution.mongodb">มีส่วนร่วมในงานส่วนฐานข้อมูล MongoDB ของโครงการ</li>
+                    <li data-project-contribution="moderation-api" data-i18n-key="project.moderation.contribution.cloudflare">ตั้งค่าโดเมน objexify.dpdns.org จาก DigitalPlat ให้ใช้งานร่วมกับ Cloudflare DNS และสร้าง Cloudflare Tunnel เชื่อมไปยัง FastAPI ที่รันบน Port 5000</li>
+                    <li data-project-contribution="moderation-api" data-i18n-key="project.moderation.contribution.figma">ออกแบบหน้าจอและ User Flow บางส่วนด้วย Figma</li>
+                  </ul>
+                </section>
+                <ul class="tech-list">
+                  <li>Python</li><li>FastAPI</li><li>YOLO11m / Ultralytics</li><li>PyTorch</li><li>OpenCV</li><li>MongoDB / PyMongo</li><li>REST API / JSON</li><li>Cloudflare Tunnel</li><li>DigitalPlat DNS</li><li>Figma</li>
+                </ul>
+              </div>
+            </article>
+            <template>
             <article class="project-row">
               <img src="/assets/projects/moderation-api.png"
                 alt="ภาพหน้าจอระบบ API สำหรับตรวจจับวัตถุไม่เหมาะสม">
@@ -165,6 +186,7 @@
                 </ul>
               </div>
             </article>
+            </template>
           </div>
         </div>
       </section>
