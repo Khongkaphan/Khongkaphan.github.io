@@ -502,6 +502,25 @@ test("has no horizontal overflow on representative viewports", async ({ page }) 
   }
 });
 
+test("featured Objexify layout adapts without horizontal overflow", async ({ page }) => {
+  for (const [viewport, expectedColumns] of [
+    [{ width: 1440, height: 900 }, 2],
+    [{ width: 768, height: 1024 }, 1],
+    [{ width: 390, height: 844 }, 1]
+  ]) {
+    await page.setViewportSize(viewport);
+    await page.goto("/");
+    const project = page.locator('[data-project="moderation-api"]');
+    const columns = await project.evaluate((element) =>
+      getComputedStyle(element).gridTemplateColumns.split(" ").length
+    );
+    expect(columns).toBe(expectedColumns);
+    expect(await page.evaluate(
+      () => document.documentElement.scrollWidth > document.documentElement.clientWidth
+    )).toBe(false);
+  }
+});
+
 test("contact links are safe", async ({ page }) => {
   await page.goto("/");
   await expect(page.getByRole("link", { name: /GitHub/ }).first())

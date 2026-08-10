@@ -12,7 +12,7 @@ body { overflow-x: hidden; }
   .hero-grid, .about-grid, .project-row { grid-template-columns: 1fr; }
   .hero { padding-top: 52px; }
   .hero img { max-width: 340px; }
-  .project-row:nth-child(even) > :first-child { order: 0; }
+  .project-row { padding: 20px; }
   .skills-groups { grid-template-columns: 1fr; }
   .contact-grid { grid-template-columns: 1fr; }
 }
