@@ -15,6 +15,29 @@ test("English and Thai expose the same translation keys", () => {
   );
 });
 
+test("About copy accurately represents AI, Computer Vision, and Backend experience", () => {
+  assert.equal(
+    getText("th", "about.body"),
+    "กำลังศึกษาระดับปริญญาตรี สาขาวิชาวิทยาการคอมพิวเตอร์ คณะเทคโนโลยีสารสนเทศและการสื่อสาร มหาวิทยาลัยพะเยา มีความสนใจด้านการประยุกต์ใช้ปัญญาประดิษฐ์ (AI) และการพัฒนาซอฟต์แวร์ โดยเฉพาะงานด้าน Computer Vision และ Backend"
+  );
+  assert.equal(
+    getText("th", "about.experience"),
+    "มีประสบการณ์ในการพัฒนาและฝึกสอนโมเดล AI สำหรับตรวจจับวัตถุ การเตรียมชุดข้อมูล และการประเมินประสิทธิภาพของโมเดล รวมถึงมีประสบการณ์ใช้งาน Git, Cloudflare และออกแบบส่วนติดต่อผู้ใช้เบื้องต้น"
+  );
+  assert.equal(
+    getText("en", "about.body"),
+    "I am pursuing a bachelor's degree in Computer Science at the School of Information and Communication Technology, University of Phayao. I am interested in applying Artificial Intelligence (AI) and developing software, particularly in Computer Vision and Backend development."
+  );
+  assert.equal(
+    getText("en", "about.experience"),
+    "I have experience developing and training AI models for object detection, preparing datasets, and evaluating model performance. I also have experience using Git and Cloudflare, along with basic user interface design."
+  );
+  assert.doesNotMatch(
+    `${getText("th", "about.body")} ${getText("th", "about.experience")} ${getText("en", "about.body")} ${getText("en", "about.experience")}`,
+    /Full-stack/i
+  );
+});
+
 test("portfolio contains only the approved Objexify group project", () => {
   assert.deepEqual(
     portfolioContent.projects.map((project) => project.id),

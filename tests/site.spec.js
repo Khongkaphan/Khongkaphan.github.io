@@ -57,6 +57,26 @@ test("renders the Thai portfolio with approved sections", async ({ page }) => {
   }
 });
 
+test("removes repeated section eyebrows and renders the approved bilingual About copy", async ({ page }) => {
+  await page.goto("/");
+
+  for (const sectionId of ["about", "skills", "education", "projects", "contact"]) {
+    await expect(page.locator(`#${sectionId} .eyebrow`)).toHaveCount(0);
+  }
+  await expect(page.getByText("Software Developer Intern", { exact: true }))
+    .toBeVisible();
+  await expect(page.locator('[data-i18n="about.body"]'))
+    .toContainText("Computer Vision และ Backend");
+  await expect(page.locator('[data-i18n="about.experience"]'))
+    .toContainText("Git, Cloudflare");
+
+  await page.getByRole("button", { name: "EN" }).click();
+  await expect(page.locator('[data-i18n="about.body"]'))
+    .toContainText("Computer Vision and Backend development");
+  await expect(page.locator('[data-i18n="about.experience"]'))
+    .toContainText("using Git and Cloudflare");
+});
+
 test("production project image keeps decoding across navigations", async ({ page }) => {
   await page.goto("/");
   await expect(page.getByRole("img", { name: "Khongkaphan Kiawsod" }))
