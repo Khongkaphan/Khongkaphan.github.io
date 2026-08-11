@@ -50,7 +50,7 @@ test("Objexify copy keeps system capability separate from personal contribution"
 test("Transcript is configured and Resume content is absent", () => {
   assert.equal(
     portfolioContent.transcript.href,
-    "/assets/transcript/transcript.pdf#page=3"
+    "/assets/transcript/transcript.pdf"
   );
   assert.equal("resume" in portfolioContent, false);
   assert.equal(getText("th", "hero.transcript"), "Transcript");

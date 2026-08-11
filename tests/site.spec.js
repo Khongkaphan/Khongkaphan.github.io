@@ -272,7 +272,7 @@ test("Transcript module owns unavailable and configured bilingual states", async
     await route.fulfill({
       response,
       body: body.replace(
-        'transcript: { href: "/assets/transcript/transcript.pdf#page=3" }',
+        'transcript: { href: "/assets/transcript/transcript.pdf" }',
         "transcript: { href: null }"
       )
     });
@@ -291,7 +291,7 @@ test("Transcript module owns unavailable and configured bilingual states", async
   await page.evaluate(async () => {
     const { portfolioContent } = await import("/js/content.js");
     const { updateTranscript } = await import("/js/transcript.js");
-    portfolioContent.transcript.href = "/assets/transcript/transcript.pdf#page=3";
+    portfolioContent.transcript.href = "/assets/transcript/transcript.pdf";
     updateTranscript("en");
     updateTranscript("en");
   });
@@ -301,7 +301,7 @@ test("Transcript module owns unavailable and configured bilingual states", async
   await expect(control).toHaveText("Transcript");
   await expect(control).toHaveAttribute(
     "href",
-    "/assets/transcript/transcript.pdf#page=3"
+    "/assets/transcript/transcript.pdf"
   );
   await expect(control).toHaveAttribute("target", "_blank");
   await expect(control).toHaveAttribute("rel", "noopener noreferrer");
@@ -320,7 +320,7 @@ test("exposes the configured Transcript in Thai and English", async ({ page }) =
   await expect(control).toHaveText("Transcript");
   await expect(control).toHaveAttribute(
     "href",
-    "/assets/transcript/transcript.pdf#page=3"
+    "/assets/transcript/transcript.pdf"
   );
   await expect(control).toHaveAttribute("target", "_blank");
   await expect(control).toHaveAttribute("rel", "noopener noreferrer");
@@ -411,7 +411,7 @@ test("Thai static fallback contains the complete Objexify case study and anchor 
   const transcriptLink = page.locator("[data-transcript-link]");
   await expect(transcriptLink).toHaveText("Transcript");
   await expect(transcriptLink).toHaveAttribute(
-    "href", "/assets/transcript/transcript.pdf#page=3"
+    "href", "/assets/transcript/transcript.pdf"
   );
   await expect(transcriptLink).toHaveAttribute("target", "_blank");
   await expect(transcriptLink).toHaveAttribute(
