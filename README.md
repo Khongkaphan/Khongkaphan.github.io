@@ -34,36 +34,16 @@ Vite, HTML, CSS, and JavaScript.
 
 ### Replace the Transcript
 
-1. Use the original university PDF without extracting, rewriting, cropping,
-   rasterizing, or redacting pages.
-2. Replace `public/assets/transcript/transcript.pdf` byte-for-byte.
-3. Keep
-   `transcript: { href: "/assets/transcript/transcript.pdf#page=3" }` in
-   `js/content.js`; the fragment controls only the initially displayed page.
-4. Update the expected SHA-256 and byte length in
-   `tests/asset-scan.test.mjs` only when the university issues a genuinely new
-   original document.
-5. From the repository root, validate the replacement's structure against the
-   current checkout (not another worktree):
+The public asset is an approved one-page flattened visual copy of visible
+source page 3, intended for this Portfolio rather than as a signed original.
 
-   ```powershell
-   $env:TRANSCRIPT_PDF =
-     (Resolve-Path 'public\assets\transcript\transcript.pdf').Path
-   @'
-   import os
-   from pypdf import PdfReader
+For future replacements:
 
-   reader = PdfReader(os.environ["TRANSCRIPT_PDF"])
-   assert len(reader.pages) == 3
-   assert "/OCProperties" in reader.trailer["/Root"]
-   assert "Signature1" in (reader.get_fields() or {})
-   print("pages=3, OCProperties=present, Signature1=present")
-   '@ | & 'C:\Users\khongkaphan\.cache\codex-runtimes\codex-primary-runtime\dependencies\python\python.exe' -
-   ```
-
-   The command must report `pages=3, OCProperties=present,
-   Signature1=present`.
-6. Run `npm run check` before publishing.
+1. Include only one page.
+2. Render the approved visible source page without cropping or editing it.
+3. Include no optional-content layers or form/signature fields.
+4. Update the pinned byte length and SHA-256 in `tests/asset-scan.test.mjs`.
+5. Run `npm run check` before publishing.
 
 ### Replace a project image
 

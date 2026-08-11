@@ -18,9 +18,9 @@ const passthroughAssets = [
   "assets/social-preview.png",
   "assets/transcript/transcript.pdf"
 ];
-const originalTranscript = {
-  bytes: 361782,
-  sha256: "3f6c0ed68ee478d3d4fa1b55de61cb642813acd274b9a03dcae908829536c1b7"
+const flattenedTranscript = {
+  bytes: 955635,
+  sha256: "f37e0cc24c86ecb093e92a1671a5cbb27d5381119f8e425d0b48ab8db71d04d3"
 };
 
 function sha256(path) {
@@ -52,12 +52,12 @@ test("project assets are delivered byte-for-byte through Vite public passthrough
   }
 });
 
-test("Transcript is the untouched original university PDF", () => {
+test("Transcript is the approved single-page flattened PDF", () => {
   const path = join(publicRoot, "assets/transcript/transcript.pdf");
   const contents = readFileSync(path);
 
-  assert.equal(contents.length, originalTranscript.bytes);
-  assert.equal(sha256(path), originalTranscript.sha256);
+  assert.equal(contents.length, flattenedTranscript.bytes);
+  assert.equal(sha256(path), flattenedTranscript.sha256);
 });
 
 test("removed StockFlow asset is absent from source and build", () => {
