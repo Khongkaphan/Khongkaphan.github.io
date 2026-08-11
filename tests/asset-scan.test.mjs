@@ -15,12 +15,17 @@ const distRoot = join(projectRoot, "dist");
 const passthroughAssets = [
   "assets/avatar.jpg",
   "assets/projects/moderation-api.png",
+  "assets/projects/moderation-api-result.png",
   "assets/social-preview.png",
   "assets/transcript/transcript.pdf"
 ];
 const flattenedTranscript = {
   bytes: 955635,
   sha256: "f37e0cc24c86ecb093e92a1671a5cbb27d5381119f8e425d0b48ab8db71d04d3"
+};
+const approvedModerationResult = {
+  bytes: 332639,
+  sha256: "29080ff5eb5f4f907aaab155541245a785bd3b6661dcb1f490393235e4834291"
 };
 
 function sha256(path) {
@@ -50,6 +55,17 @@ test("project assets are delivered byte-for-byte through Vite public passthrough
       `${asset} must pass through without transformation`
     );
   }
+});
+
+test("Objexify result screenshot is the approved real test capture", () => {
+  const path = join(
+    publicRoot,
+    "assets/projects/moderation-api-result.png"
+  );
+  const contents = readFileSync(path);
+
+  assert.equal(contents.length, approvedModerationResult.bytes);
+  assert.equal(sha256(path), approvedModerationResult.sha256);
 });
 
 test("Transcript is the approved single-page flattened PDF", () => {
