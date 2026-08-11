@@ -304,7 +304,7 @@ Run:
 
 ```powershell
 node --test tests/content.test.mjs
-npx playwright test tests/site.spec.js --grep "project image|Objexify case study|static fallback|moderation image|public assets"
+npx playwright test tests/site.spec.js --grep "project image|Objexify case study|static fallback|moderation image|aborted Objexify result image|public assets"
 ```
 
 Expected: the content test fails because `project.media` and result translation keys do not exist; browser tests fail because only one image is rendered.
@@ -517,7 +517,7 @@ Run:
 npm test
 npm run build
 node --test tests/asset-scan.test.mjs
-npx playwright test tests/site.spec.js --grep "project image|Objexify case study|static fallback|moderation image|horizontal overflow|public assets"
+npx playwright test tests/site.spec.js --grep "project image|Objexify case study|static fallback|moderation image|aborted Objexify result image|horizontal overflow|public assets"
 ```
 
 Expected: 10 Node tests, 7 asset tests, and all selected Playwright cases pass. Both images decode; the result uses `contain`; both caption and alt change language; the result-only failure placeholder does not remove the overview.
