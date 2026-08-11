@@ -48,15 +48,17 @@ function replaceFailedProjectImage(image) {
   placeholder.dataset.projectMediaId = image.dataset.projectMediaId;
   placeholder.dataset.projectImageAltKey = image.dataset.projectImageAltKey;
   placeholder.setAttribute("role", "img");
-  placeholder.setAttribute("aria-label", image.alt);
+  const language = document.documentElement.lang
+    || portfolioContent.defaultLanguage;
+  placeholder.setAttribute(
+    "aria-label",
+    `${image.alt}. ${getText(language, "project.imageUnavailable")}`
+  );
 
   const status = document.createElement("span");
   status.dataset.i18n = "project.imageUnavailable";
   status.dataset.projectImageStatus = "";
-  status.textContent = getText(
-    document.documentElement.lang || portfolioContent.defaultLanguage,
-    "project.imageUnavailable"
-  );
+  status.textContent = getText(language, "project.imageUnavailable");
   placeholder.append(status);
   image.replaceWith(placeholder);
 }

@@ -61,7 +61,12 @@ export function setLanguage(language) {
   document.querySelectorAll("[data-project-image-alt-key]").forEach((element) => {
     const alt = getText(selected, element.dataset.projectImageAltKey);
     if (element instanceof HTMLImageElement) element.alt = alt;
-    else element.setAttribute("aria-label", alt);
+    else {
+      element.setAttribute(
+        "aria-label",
+        `${alt}. ${getText(selected, "project.imageUnavailable")}`
+      );
+    }
   });
   document.querySelectorAll("[data-language]").forEach((button) => {
     button.setAttribute(

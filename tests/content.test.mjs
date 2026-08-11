@@ -58,12 +58,20 @@ test("Objexify copy keeps system capability separate from personal contribution"
   assert.match(getText("th", "project.moderation.contribution.cloudflare"), /DigitalPlat.*Cloudflare DNS.*Cloudflare Tunnel.*Port 5000/);
   assert.match(getText("en", "project.moderation.type"), /Group senior project/);
   assert.equal(
+    getText("th", "project.moderation.resultAlt"),
+    "ภาพตัวอย่างผลการทดสอบโมเดล YOLO11m ที่ตรวจพบอาวุธ พร้อม Bounding Box"
+  );
+  assert.equal(
+    getText("en", "project.moderation.resultAlt"),
+    "YOLO11m test result screenshot showing a detected weapon and bounding box"
+  );
+  assert.equal(
     getText("th", "project.moderation.resultCaption"),
-    "ตัวอย่างการทดสอบโมเดล YOLO11m: ระบบตรวจพบวัตถุประเภทอาวุธ พร้อมแสดง Bounding Box และค่า Confidence 0.71"
+    "ตัวอย่างการทดสอบโมเดล YOLO11m: ระบบตรวจพบวัตถุประเภทอาวุธ พร้อมแสดง Bounding Box และค่า Confidence"
   );
   assert.equal(
     getText("en", "project.moderation.resultCaption"),
-    "YOLO11m model test example: The system detected a weapon and displayed its bounding box with a confidence score of 0.71."
+    "YOLO11m model test example: The system detected a weapon and displayed its bounding box with a confidence score."
   );
   assert.doesNotMatch(
     portfolioContent.projects[0].contributionKeys

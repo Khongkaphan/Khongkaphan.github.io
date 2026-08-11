@@ -131,11 +131,11 @@ test("renders one bilingual Objexify case study without project links", async ({
   const result = project.locator('[data-project-media-id="result"]');
   await expect(gallery.locator("[data-project-media]")).toHaveCount(2);
   await expect(gallery.locator("figcaption")).toHaveText(
-    "ตัวอย่างการทดสอบโมเดล YOLO11m: ระบบตรวจพบวัตถุประเภทอาวุธ พร้อมแสดง Bounding Box และค่า Confidence 0.71"
+    "ตัวอย่างการทดสอบโมเดล YOLO11m: ระบบตรวจพบวัตถุประเภทอาวุธ พร้อมแสดง Bounding Box และค่า Confidence"
   );
   await expect(result).toHaveAttribute(
     "alt",
-    "ภาพตัวอย่างผลการทดสอบโมเดล YOLO11m ที่ตรวจพบอาวุธ พร้อม Bounding Box และค่า Confidence 0.71"
+    "ภาพตัวอย่างผลการทดสอบโมเดล YOLO11m ที่ตรวจพบอาวุธ พร้อม Bounding Box"
   );
 
   await page.getByRole("button", { name: "EN" }).click();
@@ -149,11 +149,11 @@ test("renders one bilingual Objexify case study without project links", async ({
   await expect(project.locator("[data-project-contribution]").first())
     .toContainText("four YOLO11m models");
   await expect(gallery.locator("figcaption")).toHaveText(
-    "YOLO11m model test example: The system detected a weapon and displayed its bounding box with a confidence score of 0.71."
+    "YOLO11m model test example: The system detected a weapon and displayed its bounding box with a confidence score."
   );
   await expect(result).toHaveAttribute(
     "alt",
-    "YOLO11m test result screenshot showing a detected weapon, bounding box, and 0.71 confidence score"
+    "YOLO11m test result screenshot showing a detected weapon and bounding box"
   );
 });
 
@@ -424,7 +424,7 @@ test("Thai static fallback contains the complete Objexify case study and anchor 
   await expect(page.locator("[data-project-list] article")).toHaveCount(1);
   await expect(page.locator("[data-project-media]")).toHaveCount(2);
   await expect(page.locator("[data-project-media] figcaption")).toHaveText(
-    "ตัวอย่างการทดสอบโมเดล YOLO11m: ระบบตรวจพบวัตถุประเภทอาวุธ พร้อมแสดง Bounding Box และค่า Confidence 0.71"
+    "ตัวอย่างการทดสอบโมเดล YOLO11m: ระบบตรวจพบวัตถุประเภทอาวุธ พร้อมแสดง Bounding Box และค่า Confidence"
   );
   await expect(page.getByText("ความสามารถของระบบ", { exact: true })).toBeVisible();
   await expect(page.getByText("หน้าที่ของผม", { exact: true })).toBeVisible();
@@ -479,7 +479,7 @@ test("aborted Objexify result image keeps the overview and localized caption", a
   await expect(placeholder).toHaveAttribute("role", "img");
   await expect(placeholder).toHaveAttribute(
     "aria-label",
-    "ภาพตัวอย่างผลการทดสอบโมเดล YOLO11m ที่ตรวจพบอาวุธ พร้อม Bounding Box และค่า Confidence 0.71"
+    "ภาพตัวอย่างผลการทดสอบโมเดล YOLO11m ที่ตรวจพบอาวุธ พร้อม Bounding Box. ไม่สามารถแสดงภาพโครงการได้"
   );
   await expect(placeholder.locator("[data-project-image-status]")).toHaveText(
     "ไม่สามารถแสดงภาพโครงการได้"
@@ -489,7 +489,7 @@ test("aborted Objexify result image keeps the overview and localized caption", a
   await page.getByRole("button", { name: "EN" }).click();
   await expect(placeholder).toHaveAttribute(
     "aria-label",
-    "YOLO11m test result screenshot showing a detected weapon, bounding box, and 0.71 confidence score"
+    "YOLO11m test result screenshot showing a detected weapon and bounding box. Project image unavailable"
   );
   await expect(placeholder.locator("[data-project-image-status]")).toHaveText(
     "Project image unavailable"

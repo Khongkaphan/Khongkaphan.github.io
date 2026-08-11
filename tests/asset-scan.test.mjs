@@ -24,8 +24,8 @@ const flattenedTranscript = {
   sha256: "f37e0cc24c86ecb093e92a1671a5cbb27d5381119f8e425d0b48ab8db71d04d3"
 };
 const approvedModerationResult = {
-  bytes: 332639,
-  sha256: "29080ff5eb5f4f907aaab155541245a785bd3b6661dcb1f490393235e4834291"
+  bytes: 288079,
+  sha256: "1e477125ed4533e364f25ec198536defd005826a6b1ece3d42a341a91e8347d2"
 };
 
 function sha256(path) {

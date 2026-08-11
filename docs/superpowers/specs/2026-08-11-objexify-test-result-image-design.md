@@ -6,11 +6,14 @@
 
 ## Approved Source and Public Asset
 
-- ภาพต้นฉบับที่ผู้ใช้อนุมัติ: `C:\Users\KHONGK~1\AppData\Local\Temp\codex-clipboard-3ed8e71b-ae6e-4311-a559-d56b423c21a4.png`
+- ภาพต้นฉบับที่ผู้ใช้อนุมัติ: `C:\Users\KHONGK~1\AppData\Local\Temp\codex-clipboard-54bde782-0fc4-4a80-b6e3-8d44379877f2.png`
 - เก็บสำเนาสำหรับเว็บไซต์เป็น `public/assets/projects/moderation-api-result.png`
+- ภาพที่อนุมัติเป็น PNG ขนาด 691×776 RGBA, 288079 bytes, SHA-256 `1e477125ed4533e364f25ec198536defd005826a6b1ece3d42a341a91e8347d2`
 - คงภาพปัจจุบัน `public/assets/projects/moderation-api.png` เป็นภาพแรก
 - ใช้ภาพผลลัพธ์ฉบับเต็มตามที่ได้รับ ไม่ครอปส่วนตั้งค่า ปุ่มอัปโหลด สรุปผล หรือการ์ดผลตรวจจับ
-- ผู้ใช้ยืนยันให้เผยแพร่ Screenshot นี้ แม้ภาพทดสอบภายใน Screenshot จะมีชื่อไฟล์ที่อ้างถึง iStock
+- ภาพทดสอบภายใน Screenshot มาจาก Pixabay โดยผู้มีส่วนร่วม `howiekat`, image ID `487965`: `https://pixabay.com/photos/-487965/`
+- อ้างอิงสรุปใบอนุญาต Pixabay: `https://pixabay.com/service/license-summary/`; ผู้ใช้ยืนยันว่าดาวน์โหลดภาพฟรีจากแหล่งที่อนุญาตให้ใช้งานได้
+- Screenshot ฉบับนี้ไม่มีใบหน้าบุคคลที่มองเห็นได้
 
 ## Layout and Content
 
@@ -23,8 +26,13 @@
 
 คำบรรยายที่อนุมัติ:
 
-- ไทย: **ตัวอย่างการทดสอบโมเดล YOLO11m: ระบบตรวจพบวัตถุประเภทอาวุธ พร้อมแสดง Bounding Box และค่า Confidence 0.71**
-- English: **YOLO11m model test example: The system detected a weapon and displayed its bounding box with a confidence score of 0.71.**
+- ไทย: **ตัวอย่างการทดสอบโมเดล YOLO11m: ระบบตรวจพบวัตถุประเภทอาวุธ พร้อมแสดง Bounding Box และค่า Confidence**
+- English: **YOLO11m model test example: The system detected a weapon and displayed its bounding box with a confidence score.**
+
+Alt text ที่อนุมัติ:
+
+- ไทย: **ภาพตัวอย่างผลการทดสอบโมเดล YOLO11m ที่ตรวจพบอาวุธ พร้อม Bounding Box**
+- English: **YOLO11m test result screenshot showing a detected weapon and bounding box**
 
 ## Data and Component Design
 
@@ -37,10 +45,11 @@
 ## Accessibility and Failure Handling
 
 - ภาพเดิมคง alt text เดิม
-- ภาพผลลัพธ์มี alt text แยกต่างหาก ซึ่งอธิบายว่าเป็น Screenshot ผลการตรวจจับอาวุธพร้อม Bounding Box และ Confidence 0.71
+- ภาพผลลัพธ์มี alt text แยกต่างหาก ซึ่งอธิบายว่าเป็น Screenshot ผลการตรวจจับอาวุธพร้อม Bounding Box
 - หากภาพใดโหลดไม่สำเร็จ ให้แทนเฉพาะภาพนั้นด้วย placeholder ที่มีข้อความสำรองตามภาษาปัจจุบัน โดยภาพอีกใบและคำบรรยายยังทำงานตามปกติ
+- Placeholder `role="img"` ต้องมี accessible name ที่รวม alt text และสถานะภาพไม่พร้อมใช้งานตามภาษาปัจจุบัน เนื่องจากข้อความลูกของ ARIA image อาจถูกมองเป็น presentational
 - Placeholder ต้องรักษาพื้นที่ของภาพและไม่ทำให้ Project card เปลี่ยนโครงสร้างอย่างรุนแรง
-- คำบรรยายเป็นข้อความประกอบตัวอย่างหนึ่งครั้ง ไม่กล่าวอ้างว่า Confidence 0.71 เป็นผลประเมินประสิทธิภาพโดยรวมของโมเดล
+- คำบรรยายอธิบายเฉพาะตัวอย่างที่แสดง ไม่กล่าวอ้างค่า Confidence เฉพาะที่มองไม่ชัดเจนใน Screenshot
 
 ## Testing and Acceptance Criteria
 

@@ -12,13 +12,17 @@
 
 - Keep Objexify as the only Portfolio project and do not change its capability or personal-contribution copy.
 - Keep `public/assets/projects/moderation-api.png` unchanged as the first image.
-- Copy the approved source exactly from `C:\Users\KHONGK~1\AppData\Local\Temp\codex-clipboard-3ed8e71b-ae6e-4311-a559-d56b423c21a4.png` to `public/assets/projects/moderation-api-result.png`.
-- The approved PNG is 809×775 RGBA, 332639 bytes, SHA-256 `29080ff5eb5f4f907aaab155541245a785bd3b6661dcb1f490393235e4834291`.
+- Copy the approved source exactly from `C:\Users\KHONGK~1\AppData\Local\Temp\codex-clipboard-54bde782-0fc4-4a80-b6e3-8d44379877f2.png` to `public/assets/projects/moderation-api-result.png`.
+- The approved PNG is 691×776 RGBA, 288079 bytes, SHA-256 `1e477125ed4533e364f25ec198536defd005826a6b1ece3d42a341a91e8347d2`.
+- The embedded test photo is Pixabay contributor `howiekat`, image ID `487965`: `https://pixabay.com/photos/-487965/`; license summary: `https://pixabay.com/service/license-summary/`.
+- The user states the photo was downloaded free from a source that permits use. The replacement Screenshot contains no visible face.
 - Preserve the complete result screenshot without cropping its settings, upload controls, summary, bounding box, filename, classification, or confidence value.
 - Use a vertical two-image gallery with no Modal, Slider, Carousel, zoom control, or project link.
 - Use `object-fit: cover` for the overview and `object-fit: contain` for the result screenshot.
-- Caption Thai exactly: `ตัวอย่างการทดสอบโมเดล YOLO11m: ระบบตรวจพบวัตถุประเภทอาวุธ พร้อมแสดง Bounding Box และค่า Confidence 0.71`
-- Caption English exactly: `YOLO11m model test example: The system detected a weapon and displayed its bounding box with a confidence score of 0.71.`
+- Alt Thai exactly: `ภาพตัวอย่างผลการทดสอบโมเดล YOLO11m ที่ตรวจพบอาวุธ พร้อม Bounding Box`
+- Alt English exactly: `YOLO11m test result screenshot showing a detected weapon and bounding box`
+- Caption Thai exactly: `ตัวอย่างการทดสอบโมเดล YOLO11m: ระบบตรวจพบวัตถุประเภทอาวุธ พร้อมแสดง Bounding Box และค่า Confidence`
+- Caption English exactly: `YOLO11m model test example: The system detected a weapon and displayed its bounding box with a confidence score.`
 - A failed media item must fall back independently; the other image and the caption must remain available.
 - Keep the static HTML fallback complete when JavaScript is unavailable.
 - Make no changes to About, Skills, Education, Contact, Transcript, social metadata, or the existing image bytes.
@@ -68,8 +72,8 @@ Add this identity beside `flattenedTranscript`:
 
 ```js
 const approvedModerationResult = {
-  bytes: 332639,
-  sha256: "29080ff5eb5f4f907aaab155541245a785bd3b6661dcb1f490393235e4834291"
+  bytes: 288079,
+  sha256: "1e477125ed4533e364f25ec198536defd005826a6b1ece3d42a341a91e8347d2"
 };
 ```
 
@@ -96,7 +100,7 @@ Run:
 node --test tests/asset-scan.test.mjs
 ```
 
-Expected: FAIL because `public/assets/projects/moderation-api-result.png` does not exist.
+Expected: FAIL while `public/assets/projects/moderation-api-result.png` still has the replaced screenshot identity.
 
 - [ ] **Step 3: Copy the approved asset without transforming it**
 
@@ -104,8 +108,8 @@ Run from the isolated feature worktree:
 
 ```powershell
 Copy-Item -LiteralPath `
-  'C:\Users\KHONGK~1\AppData\Local\Temp\codex-clipboard-3ed8e71b-ae6e-4311-a559-d56b423c21a4.png' `
-  -Destination 'public\assets\projects\moderation-api-result.png'
+  'C:\Users\KHONGK~1\AppData\Local\Temp\codex-clipboard-54bde782-0fc4-4a80-b6e3-8d44379877f2.png' `
+  -Destination 'public\assets\projects\moderation-api-result.png' -Force
 ```
 
 Do not resize, recompress, crop, annotate, or convert the image.
@@ -121,7 +125,7 @@ $asset.Length
 $hash.Hash.ToLowerInvariant()
 ```
 
-Expected: `332639` and `29080ff5eb5f4f907aaab155541245a785bd3b6661dcb1f490393235e4834291`.
+Expected: `288079` and `1e477125ed4533e364f25ec198536defd005826a6b1ece3d42a341a91e8347d2`.
 
 - [ ] **Step 5: Verify GREEN and Vite passthrough**
 
@@ -187,12 +191,20 @@ Add exact bilingual checks:
 
 ```js
 assert.equal(
+  getText("th", "project.moderation.resultAlt"),
+  "ภาพตัวอย่างผลการทดสอบโมเดล YOLO11m ที่ตรวจพบอาวุธ พร้อม Bounding Box"
+);
+assert.equal(
+  getText("en", "project.moderation.resultAlt"),
+  "YOLO11m test result screenshot showing a detected weapon and bounding box"
+);
+assert.equal(
   getText("th", "project.moderation.resultCaption"),
-  "ตัวอย่างการทดสอบโมเดล YOLO11m: ระบบตรวจพบวัตถุประเภทอาวุธ พร้อมแสดง Bounding Box และค่า Confidence 0.71"
+  "ตัวอย่างการทดสอบโมเดล YOLO11m: ระบบตรวจพบวัตถุประเภทอาวุธ พร้อมแสดง Bounding Box และค่า Confidence"
 );
 assert.equal(
   getText("en", "project.moderation.resultCaption"),
-  "YOLO11m model test example: The system detected a weapon and displayed its bounding box with a confidence score of 0.71."
+  "YOLO11m model test example: The system detected a weapon and displayed its bounding box with a confidence score."
 );
 ```
 
@@ -225,11 +237,11 @@ Extend the bilingual Objexify case-study test:
 const gallery = project.locator("[data-project-media-gallery]");
 await expect(gallery.locator("[data-project-media]")).toHaveCount(2);
 await expect(gallery.locator("figcaption")).toHaveText(
-  "ตัวอย่างการทดสอบโมเดล YOLO11m: ระบบตรวจพบวัตถุประเภทอาวุธ พร้อมแสดง Bounding Box และค่า Confidence 0.71"
+  "ตัวอย่างการทดสอบโมเดล YOLO11m: ระบบตรวจพบวัตถุประเภทอาวุธ พร้อมแสดง Bounding Box และค่า Confidence"
 );
 await expect(result).toHaveAttribute(
   "alt",
-  "ภาพตัวอย่างผลการทดสอบโมเดล YOLO11m ที่ตรวจพบอาวุธ พร้อม Bounding Box และค่า Confidence 0.71"
+  "ภาพตัวอย่างผลการทดสอบโมเดล YOLO11m ที่ตรวจพบอาวุธ พร้อม Bounding Box"
 );
 ```
 
@@ -237,11 +249,11 @@ After clicking `EN`, require:
 
 ```js
 await expect(gallery.locator("figcaption")).toHaveText(
-  "YOLO11m model test example: The system detected a weapon and displayed its bounding box with a confidence score of 0.71."
+  "YOLO11m model test example: The system detected a weapon and displayed its bounding box with a confidence score."
 );
 await expect(result).toHaveAttribute(
   "alt",
-  "YOLO11m test result screenshot showing a detected weapon, bounding box, and 0.71 confidence score"
+  "YOLO11m test result screenshot showing a detected weapon and bounding box"
 );
 ```
 
@@ -250,7 +262,7 @@ In the static-fallback test require two media items and the Thai caption:
 ```js
 await expect(page.locator("[data-project-media]")).toHaveCount(2);
 await expect(page.locator("[data-project-media] figcaption")).toHaveText(
-  "ตัวอย่างการทดสอบโมเดล YOLO11m: ระบบตรวจพบวัตถุประเภทอาวุธ พร้อมแสดง Bounding Box และค่า Confidence 0.71"
+  "ตัวอย่างการทดสอบโมเดล YOLO11m: ระบบตรวจพบวัตถุประเภทอาวุธ พร้อมแสดง Bounding Box และค่า Confidence"
 );
 ```
 
@@ -277,7 +289,7 @@ test("aborted Objexify result image keeps the overview and localized caption", a
   await expect(placeholder).toHaveAttribute("role", "img");
   await expect(placeholder).toHaveAttribute(
     "aria-label",
-    "ภาพตัวอย่างผลการทดสอบโมเดล YOLO11m ที่ตรวจพบอาวุธ พร้อม Bounding Box และค่า Confidence 0.71"
+    "ภาพตัวอย่างผลการทดสอบโมเดล YOLO11m ที่ตรวจพบอาวุธ พร้อม Bounding Box. ไม่สามารถแสดงภาพโครงการได้"
   );
   await expect(placeholder.locator("[data-project-image-status]")).toHaveText(
     "ไม่สามารถแสดงภาพโครงการได้"
@@ -287,7 +299,7 @@ test("aborted Objexify result image keeps the overview and localized caption", a
   await page.getByRole("button", { name: "EN" }).click();
   await expect(placeholder).toHaveAttribute(
     "aria-label",
-    "YOLO11m test result screenshot showing a detected weapon, bounding box, and 0.71 confidence score"
+    "YOLO11m test result screenshot showing a detected weapon and bounding box. Project image unavailable"
   );
   await expect(placeholder.locator("[data-project-image-status]")).toHaveText(
     "Project image unavailable"
@@ -315,16 +327,16 @@ Replace the old single alt translation with these Thai keys:
 
 ```js
 "project.moderation.overviewAlt": "ภาพหน้าจอระบบ Objexify สำหรับตรวจจับวัตถุไม่เหมาะสม",
-"project.moderation.resultAlt": "ภาพตัวอย่างผลการทดสอบโมเดล YOLO11m ที่ตรวจพบอาวุธ พร้อม Bounding Box และค่า Confidence 0.71",
-"project.moderation.resultCaption": "ตัวอย่างการทดสอบโมเดล YOLO11m: ระบบตรวจพบวัตถุประเภทอาวุธ พร้อมแสดง Bounding Box และค่า Confidence 0.71",
+"project.moderation.resultAlt": "ภาพตัวอย่างผลการทดสอบโมเดล YOLO11m ที่ตรวจพบอาวุธ พร้อม Bounding Box",
+"project.moderation.resultCaption": "ตัวอย่างการทดสอบโมเดล YOLO11m: ระบบตรวจพบวัตถุประเภทอาวุธ พร้อมแสดง Bounding Box และค่า Confidence",
 ```
 
 Add the matching English keys:
 
 ```js
 "project.moderation.overviewAlt": "Objexify inappropriate content detection system screen",
-"project.moderation.resultAlt": "YOLO11m test result screenshot showing a detected weapon, bounding box, and 0.71 confidence score",
-"project.moderation.resultCaption": "YOLO11m model test example: The system detected a weapon and displayed its bounding box with a confidence score of 0.71.",
+"project.moderation.resultAlt": "YOLO11m test result screenshot showing a detected weapon and bounding box",
+"project.moderation.resultCaption": "YOLO11m model test example: The system detected a weapon and displayed its bounding box with a confidence score.",
 ```
 
 Replace the project's `altKey` with:
@@ -367,15 +379,17 @@ function replaceFailedProjectImage(image) {
   placeholder.dataset.projectMediaId = image.dataset.projectMediaId;
   placeholder.dataset.projectImageAltKey = image.dataset.projectImageAltKey;
   placeholder.setAttribute("role", "img");
-  placeholder.setAttribute("aria-label", image.alt);
+  const language = document.documentElement.lang
+    || portfolioContent.defaultLanguage;
+  placeholder.setAttribute(
+    "aria-label",
+    `${image.alt}. ${getText(language, "project.imageUnavailable")}`
+  );
 
   const status = document.createElement("span");
   status.dataset.i18n = "project.imageUnavailable";
   status.dataset.projectImageStatus = "";
-  status.textContent = getText(
-    document.documentElement.lang || portfolioContent.defaultLanguage,
-    "project.imageUnavailable"
-  );
+  status.textContent = getText(language, "project.imageUnavailable");
   placeholder.append(status);
   image.replaceWith(placeholder);
 }
@@ -442,7 +456,12 @@ Remove the single-image block at `js/language.js:60-63`. Add this after the exis
 document.querySelectorAll("[data-project-image-alt-key]").forEach((element) => {
   const alt = getText(selected, element.dataset.projectImageAltKey);
   if (element instanceof HTMLImageElement) element.alt = alt;
-  else element.setAttribute("aria-label", alt);
+  else {
+    element.setAttribute(
+      "aria-label",
+      `${alt}. ${getText(selected, "project.imageUnavailable")}`
+    );
+  }
 });
 ```
 
@@ -468,8 +487,8 @@ Replace the single project `<img>` in `index.html` with:
       data-project-image="moderation-api"
       data-project-media-id="result"
       data-project-image-alt-key="project.moderation.resultAlt"
-      alt="ภาพตัวอย่างผลการทดสอบโมเดล YOLO11m ที่ตรวจพบอาวุธ พร้อม Bounding Box และค่า Confidence 0.71">
-    <figcaption data-i18n="project.moderation.resultCaption">ตัวอย่างการทดสอบโมเดล YOLO11m: ระบบตรวจพบวัตถุประเภทอาวุธ พร้อมแสดง Bounding Box และค่า Confidence 0.71</figcaption>
+      alt="ภาพตัวอย่างผลการทดสอบโมเดล YOLO11m ที่ตรวจพบอาวุธ พร้อม Bounding Box">
+    <figcaption data-i18n="project.moderation.resultCaption">ตัวอย่างการทดสอบโมเดล YOLO11m: ระบบตรวจพบวัตถุประเภทอาวุธ พร้อมแสดง Bounding Box และค่า Confidence</figcaption>
   </figure>
 </div>
 ```
@@ -559,7 +578,7 @@ $asset.Length
 $hash.Hash.ToLowerInvariant()
 ```
 
-Expected: 332639 bytes and SHA-256 `29080ff5eb5f4f907aaab155541245a785bd3b6661dcb1f490393235e4834291`. Inspect the file at original detail and confirm dimensions 809×775, complete result card, visible Bounding Box, `gun (0.71)`, filename, `ไม่ผ่าน`, and `พบ: gun`.
+Expected: 288079 bytes and SHA-256 `1e477125ed4533e364f25ec198536defd005826a6b1ece3d42a341a91e8347d2`. Inspect the file at original detail and confirm dimensions 691×776 RGBA, complete result card, visible Bounding Box, the Pixabay-derived filename, the failed-result classification, and no visible face.
 
 - [ ] **Step 3: Verify responsive visual output**
 
@@ -587,5 +606,5 @@ After Task 1, Task 2, Task 3, scoped reviews, and final whole-branch review pass
 4. Push `main` to `origin` after user selects the publication path.
 5. Wait for the `Deploy Portfolio to GitHub Pages` workflow for the exact pushed commit to succeed.
 6. Verify the live HTML contains both public image paths and the approved Thai caption.
-7. Download the live result PNG and require 332639 bytes and SHA-256 `29080ff5eb5f4f907aaab155541245a785bd3b6661dcb1f490393235e4834291`.
+7. Download the live result PNG and require 288079 bytes and SHA-256 `1e477125ed4533e364f25ec198536defd005826a6b1ece3d42a341a91e8347d2`.
 8. Confirm the live Portfolio has no horizontal overflow and the result Screenshot remains fully visible on desktop and mobile.
