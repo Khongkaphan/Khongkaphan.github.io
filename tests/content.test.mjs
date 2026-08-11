@@ -31,6 +31,23 @@ test("portfolio contains only the approved Objexify group project", () => {
     "project.moderation.contribution.cloudflare",
     "project.moderation.contribution.figma"
   ]);
+  assert.deepEqual(project.media, [
+    {
+      id: "overview",
+      src: "/assets/projects/moderation-api.png",
+      altKey: "project.moderation.overviewAlt",
+      captionKey: null,
+      fit: "cover"
+    },
+    {
+      id: "result",
+      src: "/assets/projects/moderation-api-result.png",
+      altKey: "project.moderation.resultAlt",
+      captionKey: "project.moderation.resultCaption",
+      fit: "contain"
+    }
+  ]);
+  assert.equal("altKey" in project, false);
   assert.equal(project.github, null);
 });
 
@@ -40,6 +57,14 @@ test("Objexify copy keeps system capability separate from personal contribution"
   assert.match(getText("th", "project.moderation.contribution.dataset"), /YOLO11m จำนวน 4 โมเดล/);
   assert.match(getText("th", "project.moderation.contribution.cloudflare"), /DigitalPlat.*Cloudflare DNS.*Cloudflare Tunnel.*Port 5000/);
   assert.match(getText("en", "project.moderation.type"), /Group senior project/);
+  assert.equal(
+    getText("th", "project.moderation.resultCaption"),
+    "ตัวอย่างการทดสอบโมเดล YOLO11m: ระบบตรวจพบวัตถุประเภทอาวุธ พร้อมแสดง Bounding Box และค่า Confidence 0.71"
+  );
+  assert.equal(
+    getText("en", "project.moderation.resultCaption"),
+    "YOLO11m model test example: The system detected a weapon and displayed its bounding box with a confidence score of 0.71."
+  );
   assert.doesNotMatch(
     portfolioContent.projects[0].contributionKeys
       .map((key) => getText("en", key)).join(" "),

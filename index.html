@@ -135,9 +135,25 @@
           <h2 data-i18n="projects.title">ผลงาน</h2>
           <div class="projects-list" data-project-list>
             <article class="project-row" data-project="moderation-api">
-              <img src="/assets/projects/moderation-api.png"
-                data-project-image="moderation-api"
-                alt="ภาพหน้าจอระบบ Objexify สำหรับตรวจจับวัตถุไม่เหมาะสม">
+              <div class="project-media" data-project-media-gallery="moderation-api">
+                <figure class="project-media-item" data-project-media="overview">
+                  <img class="project-media-image project-media-image--cover"
+                    src="/assets/projects/moderation-api.png"
+                    data-project-image="moderation-api"
+                    data-project-media-id="overview"
+                    data-project-image-alt-key="project.moderation.overviewAlt"
+                    alt="ภาพหน้าจอระบบ Objexify สำหรับตรวจจับวัตถุไม่เหมาะสม">
+                </figure>
+                <figure class="project-media-item" data-project-media="result">
+                  <img class="project-media-image project-media-image--contain"
+                    src="/assets/projects/moderation-api-result.png"
+                    data-project-image="moderation-api"
+                    data-project-media-id="result"
+                    data-project-image-alt-key="project.moderation.resultAlt"
+                    alt="ภาพตัวอย่างผลการทดสอบโมเดล YOLO11m ที่ตรวจพบอาวุธ พร้อม Bounding Box และค่า Confidence 0.71">
+                  <figcaption data-i18n="project.moderation.resultCaption">ตัวอย่างการทดสอบโมเดล YOLO11m: ระบบตรวจพบวัตถุประเภทอาวุธ พร้อมแสดง Bounding Box และค่า Confidence 0.71</figcaption>
+                </figure>
+              </div>
               <div>
                 <p class="project-type" data-project-type="moderation-api">โครงการจบแบบกลุ่ม</p>
                 <h3 data-project-title="moderation-api">Objexify — บริการ API สำหรับตรวจจับวัตถุไม่เหมาะสม</h3>

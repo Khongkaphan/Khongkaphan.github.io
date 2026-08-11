@@ -24,7 +24,7 @@ async function expectProjectImagesToDecode(page) {
     }))
   );
 
-  expect(imageResults).toHaveLength(1);
+  expect(imageResults).toHaveLength(2);
   for (const result of imageResults) {
     expect(result.complete).toBe(true);
     expect(result.naturalWidth).toBeGreaterThan(0);
@@ -61,13 +61,14 @@ test("production project image keeps decoding across navigations", async ({ page
   await page.goto("/");
   await expect(page.getByRole("img", { name: "Khongkaphan Kiawsod" }))
     .toHaveAttribute("src", /assets\/avatar\.jpg$/);
-  const moderationImage = page.locator(
-    'img[data-project-image="moderation-api"]'
-  );
-  await expect(moderationImage)
+  const overview = page.locator('[data-project-media-id="overview"]');
+  const result = page.locator('[data-project-media-id="result"]');
+  await expect(overview)
     .toHaveAttribute("src", /assets\/projects\/moderation-api\.png$/);
-  await expect(moderationImage).toHaveCSS("object-fit", "cover");
-  await expect(moderationImage).toHaveCSS("object-position", "50% 50%");
+  await expect(overview).toHaveCSS("object-fit", "cover");
+  await expect(result)
+    .toHaveAttribute("src", /assets\/projects\/moderation-api-result\.png$/);
+  await expect(result).toHaveCSS("object-fit", "contain");
   await expectProjectImagesToDecode(page);
 
   await page.reload();
@@ -126,6 +127,16 @@ test("renders one bilingual Objexify case study without project links", async ({
   await expect(project.locator("[data-project-contribution]")).toHaveCount(5);
   await expect(project.getByRole("link")).toHaveCount(0);
   await expect(page.getByText("StockFlow", { exact: false })).toHaveCount(0);
+  const gallery = project.locator("[data-project-media-gallery]");
+  const result = project.locator('[data-project-media-id="result"]');
+  await expect(gallery.locator("[data-project-media]")).toHaveCount(2);
+  await expect(gallery.locator("figcaption")).toHaveText(
+    "ตัวอย่างการทดสอบโมเดล YOLO11m: ระบบตรวจพบวัตถุประเภทอาวุธ พร้อมแสดง Bounding Box และค่า Confidence 0.71"
+  );
+  await expect(result).toHaveAttribute(
+    "alt",
+    "ภาพตัวอย่างผลการทดสอบโมเดล YOLO11m ที่ตรวจพบอาวุธ พร้อม Bounding Box และค่า Confidence 0.71"
+  );
 
   await page.getByRole("button", { name: "EN" }).click();
   await expect(project.locator("[data-project-type]")).toHaveText("Group senior project");
@@ -137,6 +148,13 @@ test("renders one bilingual Objexify case study without project links", async ({
   );
   await expect(project.locator("[data-project-contribution]").first())
     .toContainText("four YOLO11m models");
+  await expect(gallery.locator("figcaption")).toHaveText(
+    "YOLO11m model test example: The system detected a weapon and displayed its bounding box with a confidence score of 0.71."
+  );
+  await expect(result).toHaveAttribute(
+    "alt",
+    "YOLO11m test result screenshot showing a detected weapon, bounding box, and 0.71 confidence score"
+  );
 });
 
 test("translates accessible interface labels in both languages", async ({ page }) => {
@@ -404,6 +422,10 @@ test("Thai static fallback contains the complete Objexify case study and anchor 
   ]);
   await expect(fallbackSkillGroups.locator("li")).toHaveCount(12);
   await expect(page.locator("[data-project-list] article")).toHaveCount(1);
+  await expect(page.locator("[data-project-media]")).toHaveCount(2);
+  await expect(page.locator("[data-project-media] figcaption")).toHaveText(
+    "ตัวอย่างการทดสอบโมเดล YOLO11m: ระบบตรวจพบวัตถุประเภทอาวุธ พร้อมแสดง Bounding Box และค่า Confidence 0.71"
+  );
   await expect(page.getByText("ความสามารถของระบบ", { exact: true })).toBeVisible();
   await expect(page.getByText("หน้าที่ของผม", { exact: true })).toBeVisible();
   await expect(page.locator("[data-project-list] li")).toHaveCount(15);
@@ -439,32 +461,40 @@ test("Thai static fallback contains the complete Objexify case study and anchor 
   await expect(page.locator("html")).not.toHaveClass(/reveal-ready/);
 });
 
-test("aborted moderation image becomes a localized accessible placeholder", async ({ page }) => {
+test("aborted Objexify result image keeps the overview and localized caption", async ({ page }) => {
   await page.route(
-    "**/assets/projects/moderation-api.png",
+    "**/assets/projects/moderation-api-result.png",
     (route) => route.abort()
   );
   await page.goto("/");
 
-  const placeholder = page.locator('[data-project-image="moderation-api"]');
-  await expect(placeholder).toHaveClass(/project-image-fallback/);
+  const project = page.locator('[data-project="moderation-api"]');
+  const overview = project.locator('img[data-project-media-id="overview"]');
+  const placeholder = project.locator(
+    '.project-image-fallback[data-project-media-id="result"]'
+  );
+  const caption = project.locator('[data-project-media="result"] figcaption');
+
+  await expect(overview).toBeVisible();
   await expect(placeholder).toHaveAttribute("role", "img");
   await expect(placeholder).toHaveAttribute(
     "aria-label",
-    "ภาพหน้าจอระบบ Objexify สำหรับตรวจจับวัตถุไม่เหมาะสม"
+    "ภาพตัวอย่างผลการทดสอบโมเดล YOLO11m ที่ตรวจพบอาวุธ พร้อม Bounding Box และค่า Confidence 0.71"
   );
   await expect(placeholder.locator("[data-project-image-status]")).toHaveText(
     "ไม่สามารถแสดงภาพโครงการได้"
   );
+  await expect(caption).toContainText("ตัวอย่างการทดสอบโมเดล YOLO11m");
 
   await page.getByRole("button", { name: "EN" }).click();
   await expect(placeholder).toHaveAttribute(
     "aria-label",
-    "Objexify inappropriate content detection system screen"
+    "YOLO11m test result screenshot showing a detected weapon, bounding box, and 0.71 confidence score"
   );
   await expect(placeholder.locator("[data-project-image-status]")).toHaveText(
     "Project image unavailable"
   );
+  await expect(caption).toContainText("YOLO11m model test example");
 });
 
 test("reduced motion reveals every section without animation dependence", async ({ page }) => {
@@ -554,6 +584,7 @@ test("serves public assets from deployment-stable URLs", async ({ request }) => 
   for (const [path, contentType] of [
     ["/assets/avatar.jpg", "image/jpeg"],
     ["/assets/projects/moderation-api.png", "image/png"],
+    ["/assets/projects/moderation-api-result.png", "image/png"],
     ["/assets/social-preview.png", "image/png"]
   ]) {
     const response = await request.get(path);

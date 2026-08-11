@@ -45,9 +45,13 @@ For future replacements:
 4. Update the pinned byte length and SHA-256 in `tests/asset-scan.test.mjs`.
 5. Run `npm run check` before publishing.
 
-### Replace a project image
+### Replace project media
 
-Copy the new file into `public/assets/projects`, then update the matching `src`
-in `renderProjects()` inside `js/app.js`. The current Objexify image is
-`public/assets/projects/moderation-api.png`. Do not label a generated visual as
-a real project screenshot.
+Objexify media is an ordered `media` array in `js/content.js`. Real project
+screenshots are stored under `public/assets/projects` and are also represented
+in the Thai static fallback in `index.html`.
+
+When replacing project media, update its `src`, bilingual alt/caption keys,
+static fallback markup, and any pinned byte length or SHA-256 in
+`tests/asset-scan.test.mjs`, then run `npm run check`. Do not describe a
+generated visual as a real project screenshot.

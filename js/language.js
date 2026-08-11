@@ -57,10 +57,11 @@ export function setLanguage(language) {
       item.textContent = getText(selected, item.dataset.i18nKey);
     });
 
-    const image = document.querySelector(`[data-project-image="${project.id}"]`);
-    const alt = getText(selected, project.altKey);
-    if (image instanceof HTMLImageElement) image.alt = alt;
-    else if (image) image.setAttribute("aria-label", alt);
+  });
+  document.querySelectorAll("[data-project-image-alt-key]").forEach((element) => {
+    const alt = getText(selected, element.dataset.projectImageAltKey);
+    if (element instanceof HTMLImageElement) element.alt = alt;
+    else element.setAttribute("aria-label", alt);
   });
   document.querySelectorAll("[data-language]").forEach((button) => {
     button.setAttribute(

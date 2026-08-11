@@ -39,7 +39,9 @@ const th = {
   "project.moderation.contribution.mongodb": "มีส่วนร่วมในงานส่วนฐานข้อมูล MongoDB ของโครงการ",
   "project.moderation.contribution.cloudflare": "ตั้งค่าโดเมน objexify.dpdns.org จาก DigitalPlat ให้ใช้งานร่วมกับ Cloudflare DNS และสร้าง Cloudflare Tunnel เชื่อมไปยัง FastAPI ที่รันบน Port 5000",
   "project.moderation.contribution.figma": "ออกแบบหน้าจอและ User Flow บางส่วนด้วย Figma",
-  "project.moderation.alt": "ภาพหน้าจอระบบ Objexify สำหรับตรวจจับวัตถุไม่เหมาะสม",
+  "project.moderation.overviewAlt": "ภาพหน้าจอระบบ Objexify สำหรับตรวจจับวัตถุไม่เหมาะสม",
+  "project.moderation.resultAlt": "ภาพตัวอย่างผลการทดสอบโมเดล YOLO11m ที่ตรวจพบอาวุธ พร้อม Bounding Box และค่า Confidence 0.71",
+  "project.moderation.resultCaption": "ตัวอย่างการทดสอบโมเดล YOLO11m: ระบบตรวจพบวัตถุประเภทอาวุธ พร้อมแสดง Bounding Box และค่า Confidence 0.71",
   "project.imageUnavailable": "ไม่สามารถแสดงภาพโครงการได้",
   "project.github": "เปิด GitHub",
   "contact.title": "ติดต่อฉัน",
@@ -91,7 +93,9 @@ const en = {
   "project.moderation.contribution.mongodb": "Contributed to the project's MongoDB-related work.",
   "project.moderation.contribution.cloudflare": "Configured the DigitalPlat domain objexify.dpdns.org with Cloudflare DNS and created a Cloudflare Tunnel to the FastAPI service running on port 5000.",
   "project.moderation.contribution.figma": "Designed selected screens and user flows in Figma.",
-  "project.moderation.alt": "Objexify inappropriate content detection system screen",
+  "project.moderation.overviewAlt": "Objexify inappropriate content detection system screen",
+  "project.moderation.resultAlt": "YOLO11m test result screenshot showing a detected weapon, bounding box, and 0.71 confidence score",
+  "project.moderation.resultCaption": "YOLO11m model test example: The system detected a weapon and displayed its bounding box with a confidence score of 0.71.",
   "project.imageUnavailable": "Project image unavailable",
   "project.github": "View on GitHub",
   "contact.title": "Contact Me",
@@ -155,7 +159,22 @@ export const portfolioContent = {
         "project.moderation.contribution.cloudflare",
         "project.moderation.contribution.figma"
       ],
-      altKey: "project.moderation.alt",
+      media: [
+        {
+          id: "overview",
+          src: "/assets/projects/moderation-api.png",
+          altKey: "project.moderation.overviewAlt",
+          captionKey: null,
+          fit: "cover"
+        },
+        {
+          id: "result",
+          src: "/assets/projects/moderation-api-result.png",
+          altKey: "project.moderation.resultAlt",
+          captionKey: "project.moderation.resultCaption",
+          fit: "contain"
+        }
+      ],
       technologies: [
         "Python", "FastAPI", "YOLO11m / Ultralytics", "PyTorch", "OpenCV",
         "MongoDB / PyMongo", "REST API / JSON", "Cloudflare Tunnel",

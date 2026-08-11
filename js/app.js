@@ -36,20 +36,19 @@ function renderSkills() {
   );
 }
 
-function replaceFailedProjectImage(image, project) {
+function replaceFailedProjectImage(image) {
   if (!image.parentNode) return;
 
   const placeholder = document.createElement("div");
   placeholder.className = "project-placeholder project-image-fallback";
-  placeholder.dataset.projectImage = project.id;
+  if (image.classList.contains("project-media-image--contain")) {
+    placeholder.classList.add("project-media-image--contain");
+  }
+  placeholder.dataset.projectImage = image.dataset.projectImage;
+  placeholder.dataset.projectMediaId = image.dataset.projectMediaId;
+  placeholder.dataset.projectImageAltKey = image.dataset.projectImageAltKey;
   placeholder.setAttribute("role", "img");
-  placeholder.setAttribute(
-    "aria-label",
-    image.alt || getText(
-      document.documentElement.lang || portfolioContent.defaultLanguage,
-      project.altKey
-    )
-  );
+  placeholder.setAttribute("aria-label", image.alt);
 
   const status = document.createElement("span");
   status.dataset.i18n = "project.imageUnavailable";
@@ -62,9 +61,40 @@ function replaceFailedProjectImage(image, project) {
   image.replaceWith(placeholder);
 }
 
-const PROJECT_IMAGE_SOURCES = Object.freeze({
-  "moderation-api": "/assets/projects/moderation-api.png"
-});
+function createProjectMedia(project, language) {
+  const gallery = document.createElement("div");
+  gallery.className = "project-media";
+  gallery.dataset.projectMediaGallery = project.id;
+
+  for (const media of project.media) {
+    const figure = document.createElement("figure");
+    figure.className = "project-media-item";
+    figure.dataset.projectMedia = media.id;
+
+    const image = document.createElement("img");
+    image.className = `project-media-image project-media-image--${media.fit}`;
+    image.src = media.src;
+    image.alt = getText(language, media.altKey);
+    image.dataset.projectImage = project.id;
+    image.dataset.projectMediaId = media.id;
+    image.dataset.projectImageAltKey = media.altKey;
+    image.addEventListener(
+      "error",
+      () => replaceFailedProjectImage(image),
+      { once: true }
+    );
+    figure.append(image);
+
+    if (media.captionKey) {
+      const caption = document.createElement("figcaption");
+      caption.dataset.i18n = media.captionKey;
+      caption.textContent = getText(language, media.captionKey);
+      figure.append(caption);
+    }
+    gallery.append(figure);
+  }
+  return gallery;
+}
 
 function renderProjects() {
   const list = document.querySelector("[data-project-list]");
@@ -74,10 +104,7 @@ function renderProjects() {
       article.className = "project-row reveal";
       article.dataset.project = project.id;
       const language = portfolioContent.defaultLanguage;
-      const projectImage = document.createElement("img");
-      projectImage.src = PROJECT_IMAGE_SOURCES[project.id];
-      projectImage.dataset.projectImage = project.id;
-      projectImage.alt = getText(language, project.altKey);
+      const projectMedia = createProjectMedia(project, language);
 
       const content = document.createElement("div");
       const type = document.createElement("p");
@@ -139,13 +166,7 @@ function renderProjects() {
         link.textContent = getText(language, "project.github");
         content.append(link);
       }
-      article.append(projectImage, content);
-
-      projectImage?.addEventListener(
-        "error",
-        () => replaceFailedProjectImage(projectImage, project),
-        { once: true }
-      );
+      article.append(projectMedia, content);
       return article;
     })
   );
