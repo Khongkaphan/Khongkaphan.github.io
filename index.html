@@ -10,6 +10,10 @@
     <meta property="og:image" content="/assets/social-preview.png">
     <meta name="twitter:card" content="summary_large_image">
     <title>Khongkaphan Kiawsod | Software Developer Portfolio</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Prompt:wght@300;400;500;600;700&display=swap" rel="stylesheet" media="print" onload="this.media='all'">
+    <noscript><link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Prompt:wght@300;400;500;600;700&display=swap" rel="stylesheet"></noscript>
     <link rel="stylesheet" href="/css/global.css">
     <link rel="stylesheet" href="/css/sections.css">
     <link rel="stylesheet" href="/css/responsive.css">
@@ -44,9 +48,15 @@
     <main id="main">
       <section id="home" class="hero section">
         <div class="container hero-grid">
-          <img src="/assets/avatar.jpg" alt="Khongkaphan Kiawsod">
-          <div>
-            <p class="eyebrow" data-i18n="hero.role">Software Developer Intern</p>
+          <div class="hero-avatar-wrapper">
+            <div class="hero-avatar-glow" aria-hidden="true"></div>
+            <img src="/assets/avatar.jpg" alt="Khongkaphan Kiawsod">
+          </div>
+          <div class="hero-content">
+            <div class="status-badge">
+              <span class="status-dot" aria-hidden="true"></span>
+              <p class="eyebrow" data-i18n="hero.role">Software Developer Intern</p>
+            </div>
             <h1>Khongkaphan Kiawsod</h1>
             <p data-i18n="hero.summary">นักศึกษาวิทยาการคอมพิวเตอร์ สนใจการพัฒนาซอฟต์แวร์ ระบบเว็บ และการประยุกต์ใช้ AI</p>
             <div class="button-row">
@@ -67,9 +77,10 @@
           <div>
             <h2 data-i18n="about.title">เกี่ยวกับฉัน</h2>
           </div>
-          <div>
-            <p data-i18n="about.body">กำลังศึกษาระดับปริญญาตรี สาขาวิชาวิทยาการคอมพิวเตอร์ คณะเทคโนโลยีสารสนเทศและการสื่อสาร มหาวิทยาลัยพะเยา มีความสนใจด้านการประยุกต์ใช้ปัญญาประดิษฐ์ (AI) และการพัฒนาซอฟต์แวร์ โดยเฉพาะงานด้าน Computer Vision และ Backend</p>
-            <p data-i18n="about.experience">มีประสบการณ์ในการพัฒนาและฝึกสอนโมเดล AI สำหรับตรวจจับวัตถุ การเตรียมชุดข้อมูล และการประเมินประสิทธิภาพของโมเดล รวมถึงมีประสบการณ์ใช้งาน Git, Cloudflare และออกแบบส่วนติดต่อผู้ใช้เบื้องต้น</p>
+          <div class="about-content-card">
+            <p data-i18n="about.body">กำลังศึกษาระดับปริญญาตรี สาขาวิชาวิทยาการคอมพิวเตอร์ คณะเทคโนโลยีสารสนเทศและการสื่อสาร มหาวิทยาลัยพะเยา มีความสนใจในการประยุกต์ใช้ปัญญาประดิษฐ์ (AI) เพื่อพัฒนาซอฟต์แวร์และระบบที่สามารถนำไปใช้งานได้จริง โดยปัจจุบันสนใจเป็นพิเศษในด้าน AI Agent, Automation และ Computer Vision</p>
+            <p data-i18n="about.experience">มีประสบการณ์พัฒนาโปรเจกต์ด้าน AI ตั้งแต่การเตรียมและจัดการชุดข้อมูล การฝึกสอนและประเมินประสิทธิภาพโมเดลตรวจจับวัตถุ ไปจนถึงการนำโมเดลมาให้บริการผ่าน REST API รวมถึงมีประสบการณ์ใช้งาน Git, Cloudflare และการออกแบบส่วนติดต่อผู้ใช้เบื้องต้น</p>
+            <p data-i18n="about.goal">ปัจจุบันต้องการเรียนรู้และต่อยอดความรู้ด้าน AI Agent และ Automation ผ่านการพัฒนาโปรเจกต์และการทำงานจริง เพื่อเพิ่มประสบการณ์ในการสร้างระบบ AI ที่สามารถทำงานร่วมกับซอฟต์แวร์และกระบวนการต่าง ๆ ได้อย่างมีประสิทธิภาพ</p>
           </div>
         </div>
       </section>
@@ -103,7 +114,6 @@
               <h3 data-i18n="skills.group.tools">เครื่องมือ</h3>
               <ul class="skills-list">
                 <li class="skill-item">Git / GitHub</li>
-                <li class="skill-item">Postman</li>
                 <li class="skill-item">VS Code</li>
                 <li class="skill-item">Roboflow</li>
                 <li class="skill-item">Figma</li>

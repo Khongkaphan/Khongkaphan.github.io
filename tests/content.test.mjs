@@ -18,19 +18,19 @@ test("English and Thai expose the same translation keys", () => {
 test("About copy accurately represents AI, Computer Vision, and Backend experience", () => {
   assert.equal(
     getText("th", "about.body"),
-    "กำลังศึกษาระดับปริญญาตรี สาขาวิชาวิทยาการคอมพิวเตอร์ คณะเทคโนโลยีสารสนเทศและการสื่อสาร มหาวิทยาลัยพะเยา มีความสนใจด้านการประยุกต์ใช้ปัญญาประดิษฐ์ (AI) และการพัฒนาซอฟต์แวร์ โดยเฉพาะงานด้าน Computer Vision และ Backend"
+    "กำลังศึกษาระดับปริญญาตรี สาขาวิชาวิทยาการคอมพิวเตอร์ คณะเทคโนโลยีสารสนเทศและการสื่อสาร มหาวิทยาลัยพะเยา มีความสนใจในการประยุกต์ใช้ปัญญาประดิษฐ์ (AI) เพื่อพัฒนาซอฟต์แวร์และระบบที่สามารถนำไปใช้งานได้จริง โดยปัจจุบันสนใจเป็นพิเศษในด้าน AI Agent, Automation และ Computer Vision"
   );
   assert.equal(
     getText("th", "about.experience"),
-    "มีประสบการณ์ในการพัฒนาและฝึกสอนโมเดล AI สำหรับตรวจจับวัตถุ การเตรียมชุดข้อมูล และการประเมินประสิทธิภาพของโมเดล รวมถึงมีประสบการณ์ใช้งาน Git, Cloudflare และออกแบบส่วนติดต่อผู้ใช้เบื้องต้น"
+    "มีประสบการณ์พัฒนาโปรเจกต์ด้าน AI ตั้งแต่การเตรียมและจัดการชุดข้อมูล การฝึกสอนและประเมินประสิทธิภาพโมเดลตรวจจับวัตถุ ไปจนถึงการนำโมเดลมาให้บริการผ่าน REST API รวมถึงมีประสบการณ์ใช้งาน Git, Cloudflare และการออกแบบส่วนติดต่อผู้ใช้เบื้องต้น"
   );
   assert.equal(
     getText("en", "about.body"),
-    "I am pursuing a bachelor's degree in Computer Science at the School of Information and Communication Technology, University of Phayao. I am interested in applying Artificial Intelligence (AI) and developing software, particularly in Computer Vision and Backend development."
+    "I am pursuing a bachelor's degree in Computer Science at the School of Information and Communication Technology, University of Phayao. I am interested in applying Artificial Intelligence (AI) to develop practical software and systems, with a current focus on AI Agents, Automation, and Computer Vision."
   );
   assert.equal(
     getText("en", "about.experience"),
-    "I have experience developing and training AI models for object detection, preparing datasets, and evaluating model performance. I also have experience using Git and Cloudflare, along with basic user interface design."
+    "I have experience developing AI projects ranging from dataset preparation and management, training and evaluating object detection models, to serving models via REST APIs. I also have experience using Git, Cloudflare, and basic user interface design."
   );
   assert.doesNotMatch(
     `${getText("th", "about.body")} ${getText("th", "about.experience")} ${getText("en", "about.body")} ${getText("en", "about.experience")}`,
@@ -164,7 +164,7 @@ test("skills contain only the approved interview-safe items", () => {
     { id: "programming-languages", labelKey: "skills.group.programmingLanguages", items: ["Python", "JavaScript", "HTML / CSS"] },
     { id: "frameworks-libraries", labelKey: "skills.group.frameworksLibraries", items: ["PyTorch", "Ultralytics (YOLO)"] },
     { id: "database-api", labelKey: "skills.group.databaseApi", items: ["REST API"] },
-    { id: "tools", labelKey: "skills.group.tools", items: ["Git / GitHub", "Postman", "VS Code", "Roboflow", "Figma", "Cloudflare"] }
+    { id: "tools", labelKey: "skills.group.tools", items: ["Git / GitHub", "VS Code", "Roboflow", "Figma", "Cloudflare"] }
   ]);
 });
 

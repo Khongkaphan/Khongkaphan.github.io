@@ -66,15 +66,15 @@ test("removes repeated section eyebrows and renders the approved bilingual About
   await expect(page.getByText("Software Developer Intern", { exact: true }))
     .toBeVisible();
   await expect(page.locator('[data-i18n="about.body"]'))
-    .toContainText("Computer Vision และ Backend");
+    .toContainText("AI Agent, Automation");
   await expect(page.locator('[data-i18n="about.experience"]'))
     .toContainText("Git, Cloudflare");
 
   await page.getByRole("button", { name: "EN" }).click();
   await expect(page.locator('[data-i18n="about.body"]'))
-    .toContainText("Computer Vision and Backend development");
+    .toContainText("AI Agents, Automation");
   await expect(page.locator('[data-i18n="about.experience"]'))
-    .toContainText("using Git and Cloudflare");
+    .toContainText("Git, Cloudflare");
 });
 
 test("production project image keeps decoding across navigations", async ({ page }) => {
@@ -232,7 +232,6 @@ test("renders exactly four semantic bilingual skill groups", async ({ page }) =>
     "Ultralytics (YOLO)",
     "REST API",
     "Git / GitHub",
-    "Postman",
     "VS Code",
     "Roboflow",
     "Figma",
@@ -440,7 +439,7 @@ test("Thai static fallback contains the complete Objexify case study and anchor 
     "ฐานข้อมูลและ API",
     "เครื่องมือ"
   ]);
-  await expect(fallbackSkillGroups.locator("li")).toHaveCount(12);
+  await expect(fallbackSkillGroups.locator("li")).toHaveCount(11);
   await expect(page.locator("[data-project-list] article")).toHaveCount(1);
   await expect(page.locator("[data-project-media]")).toHaveCount(2);
   await expect(page.locator("[data-project-media] figcaption")).toHaveText(
