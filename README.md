@@ -23,12 +23,11 @@ Vite, HTML, CSS, and JavaScript.
 ## Publish to GitHub Pages
 
 1. Create a public repository named `Khongkaphan.github.io`.
-2. Copy the contents of `portfolio-site` to the repository root.
-3. Push the `main` branch.
-4. Open Settings → Pages.
-5. Set Source to GitHub Actions.
-6. Wait for the `Deploy Portfolio to GitHub Pages` workflow.
-7. Open `https://khongkaphan.github.io/`.
+2. Push your source code to the `main` branch.
+3. Open Settings → Pages.
+4. Set Source to GitHub Actions.
+5. Wait for the `Deploy Portfolio to GitHub Pages` workflow.
+6. Open `https://khongkaphan.github.io/`.
 
 ## Update personal content
 
