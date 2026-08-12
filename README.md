@@ -29,18 +29,3 @@ Vite, HTML, CSS, and JavaScript.
 5. Wait for the `Deploy Portfolio to GitHub Pages` workflow.
 6. Open `https://khongkaphan.github.io/`.
 
-## Update personal content
-
-### Replace the Transcript
-
-The public asset is an approved one-page flattened visual copy of visible
-source page 3, intended for this Portfolio rather than as a signed original.
-
-For future replacements:
-
-1. Include only one page.
-2. Render the approved visible source page without cropping or editing it.
-3. Include no optional-content layers or form/signature fields.
-4. Update the pinned byte length and SHA-256 in `tests/asset-scan.test.mjs`.
-5. Run `npm run check` before publishing.
-
