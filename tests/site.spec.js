@@ -66,13 +66,13 @@ test("removes repeated section eyebrows and renders the approved bilingual About
   await expect(page.getByText("Software Developer Intern", { exact: true }))
     .toBeVisible();
   await expect(page.locator('[data-i18n="about.body"]'))
-    .toContainText("AI Agent, Automation");
+    .toContainText("Claude Code และ Codex");
   await expect(page.locator('[data-i18n="about.experience"]'))
     .toContainText("Git, Cloudflare");
 
   await page.getByRole("button", { name: "EN" }).click();
   await expect(page.locator('[data-i18n="about.body"]'))
-    .toContainText("AI Agents, Automation");
+    .toContainText("Claude Code and Codex");
   await expect(page.locator('[data-i18n="about.experience"]'))
     .toContainText("Git, Cloudflare");
 });
@@ -226,11 +226,11 @@ test("renders exactly four semantic bilingual skill groups", async ({ page }) =>
   await expect(groups.locator("ul")).toHaveCount(4);
   await expect(groups.locator("li")).toHaveText([
     "Python",
-    "JavaScript",
-    "HTML / CSS",
     "PyTorch",
     "Ultralytics (YOLO)",
     "REST API",
+    "Claude Code",
+    "Codex",
     "Git / GitHub",
     "VS Code",
     "Roboflow",

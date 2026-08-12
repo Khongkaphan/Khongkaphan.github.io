@@ -18,7 +18,7 @@ test("English and Thai expose the same translation keys", () => {
 test("About copy accurately represents AI, Computer Vision, and Backend experience", () => {
   assert.equal(
     getText("th", "about.body"),
-    "กำลังศึกษาระดับปริญญาตรี สาขาวิชาวิทยาการคอมพิวเตอร์ คณะเทคโนโลยีสารสนเทศและการสื่อสาร มหาวิทยาลัยพะเยา มีความสนใจในการประยุกต์ใช้ปัญญาประดิษฐ์ (AI) เพื่อพัฒนาซอฟต์แวร์และระบบที่สามารถนำไปใช้งานได้จริง โดยปัจจุบันสนใจเป็นพิเศษในด้าน AI Agent, Automation และ Computer Vision"
+    "กำลังศึกษาระดับปริญญาตรี สาขาวิชาวิทยาการคอมพิวเตอร์ คณะเทคโนโลยีสารสนเทศและการสื่อสาร มหาวิทยาลัยพะเยา มีความสนใจด้านการประยุกต์ใช้ปัญญาประดิษฐ์ (AI) ในการพัฒนาซอฟต์แวร์ โดยเน้นการใช้งานเครื่องมือ AI เช่น Claude Code และ Codex ร่วมกับพื้นฐานภาษา Python เพื่อสร้างระบบและซอฟต์แวร์ได้อย่างมีประสิทธิภาพ"
   );
   assert.equal(
     getText("th", "about.experience"),
@@ -26,7 +26,7 @@ test("About copy accurately represents AI, Computer Vision, and Backend experien
   );
   assert.equal(
     getText("en", "about.body"),
-    "I am pursuing a bachelor's degree in Computer Science at the School of Information and Communication Technology, University of Phayao. I am interested in applying Artificial Intelligence (AI) to develop practical software and systems, with a current focus on AI Agents, Automation, and Computer Vision."
+    "I am pursuing a bachelor's degree in Computer Science at the School of Information and Communication Technology, University of Phayao. I focus on AI-driven software development, leveraging AI tools like Claude Code and Codex alongside foundational Python knowledge to build effective systems."
   );
   assert.equal(
     getText("en", "about.experience"),
@@ -161,10 +161,10 @@ test("accessible interface labels have complete Thai and English translations", 
 
 test("skills contain only the approved interview-safe items", () => {
   assert.deepEqual(portfolioContent.skills, [
-    { id: "programming-languages", labelKey: "skills.group.programmingLanguages", items: ["Python", "JavaScript", "HTML / CSS"] },
+    { id: "programming-languages", labelKey: "skills.group.programmingLanguages", items: ["Python"] },
     { id: "frameworks-libraries", labelKey: "skills.group.frameworksLibraries", items: ["PyTorch", "Ultralytics (YOLO)"] },
     { id: "database-api", labelKey: "skills.group.databaseApi", items: ["REST API"] },
-    { id: "tools", labelKey: "skills.group.tools", items: ["Git / GitHub", "VS Code", "Roboflow", "Figma", "Cloudflare"] }
+    { id: "tools", labelKey: "skills.group.tools", items: ["Claude Code", "Codex", "Git / GitHub", "VS Code", "Roboflow", "Figma", "Cloudflare"] }
   ]);
 });
 

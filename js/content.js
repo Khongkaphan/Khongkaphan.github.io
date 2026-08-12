@@ -16,9 +16,9 @@ const th = {
   "hero.transcript": "Transcript",
   "hero.contact": "ติดต่อฉัน",
   "about.title": "เกี่ยวกับฉัน",
-  "about.body": "กำลังศึกษาระดับปริญญาตรี สาขาวิชาวิทยาการคอมพิวเตอร์ คณะเทคโนโลยีสารสนเทศและการสื่อสาร มหาวิทยาลัยพะเยา มีความสนใจในการประยุกต์ใช้ปัญญาประดิษฐ์ (AI) เพื่อพัฒนาซอฟต์แวร์และระบบที่สามารถนำไปใช้งานได้จริง โดยปัจจุบันสนใจเป็นพิเศษในด้าน AI Agent, Automation และ Computer Vision",
+  "about.body": "กำลังศึกษาระดับปริญญาตรี สาขาวิชาวิทยาการคอมพิวเตอร์ คณะเทคโนโลยีสารสนเทศและการสื่อสาร มหาวิทยาลัยพะเยา มีความสนใจด้านการประยุกต์ใช้ปัญญาประดิษฐ์ (AI) ในการพัฒนาซอฟต์แวร์ โดยเน้นการใช้งานเครื่องมือ AI เช่น Claude Code และ Codex ร่วมกับพื้นฐานภาษา Python เพื่อสร้างระบบและซอฟต์แวร์ได้อย่างมีประสิทธิภาพ",
   "about.experience": "มีประสบการณ์พัฒนาโปรเจกต์ด้าน AI ตั้งแต่การเตรียมและจัดการชุดข้อมูล การฝึกสอนและประเมินประสิทธิภาพโมเดลตรวจจับวัตถุ ไปจนถึงการนำโมเดลมาให้บริการผ่าน REST API รวมถึงมีประสบการณ์ใช้งาน Git, Cloudflare และการออกแบบส่วนติดต่อผู้ใช้เบื้องต้น",
-  "about.goal": "ปัจจุบันต้องการเรียนรู้และต่อยอดความรู้ด้าน AI Agent และ Automation ผ่านการพัฒนาโปรเจกต์และการทำงานจริง เพื่อเพิ่มประสบการณ์ในการสร้างระบบ AI ที่สามารถทำงานร่วมกับซอฟต์แวร์และกระบวนการต่าง ๆ ได้อย่างมีประสิทธิภาพ",
+  "about.goal": "ปัจจุบันต้องการเรียนรู้และต่อยอดความรู้ด้าน AI Agent และ Automation ผ่านการพัฒนาโปรเจกต์และการทำงานร่วมกับเครื่องมือ AI ขั้นสูง เพื่อเพิ่มประสิทธิภาพในการสร้างซอฟต์แวร์และกระบวนการต่าง ๆ",
   "skills.title": "ทักษะ",
   "skills.group.programmingLanguages": "ภาษาโปรแกรม",
   "skills.group.frameworksLibraries": "เฟรมเวิร์กและไลบรารี",
@@ -71,9 +71,9 @@ const en = {
   "hero.transcript": "Transcript",
   "hero.contact": "Contact Me",
   "about.title": "About Me",
-  "about.body": "I am pursuing a bachelor's degree in Computer Science at the School of Information and Communication Technology, University of Phayao. I am interested in applying Artificial Intelligence (AI) to develop practical software and systems, with a current focus on AI Agents, Automation, and Computer Vision.",
+  "about.body": "I am pursuing a bachelor's degree in Computer Science at the School of Information and Communication Technology, University of Phayao. I focus on AI-driven software development, leveraging AI tools like Claude Code and Codex alongside foundational Python knowledge to build effective systems.",
   "about.experience": "I have experience developing AI projects ranging from dataset preparation and management, training and evaluating object detection models, to serving models via REST APIs. I also have experience using Git, Cloudflare, and basic user interface design.",
-  "about.goal": "Currently, I am looking to expand my knowledge in AI Agents and Automation through project development and hands-on experience, aiming to efficiently build AI systems that integrate with various software and workflows.",
+  "about.goal": "Currently, I am looking to expand my knowledge in AI Agents and Automation through project development and advanced AI tooling to streamline software creation and workflows.",
   "skills.title": "Skills",
   "skills.group.programmingLanguages": "Programming Languages",
   "skills.group.frameworksLibraries": "Frameworks and Libraries",
@@ -115,7 +115,7 @@ export const portfolioContent = {
     {
       id: "programming-languages",
       labelKey: "skills.group.programmingLanguages",
-      items: ["Python", "JavaScript", "HTML / CSS"]
+      items: ["Python"]
     },
     {
       id: "frameworks-libraries",
@@ -131,6 +131,8 @@ export const portfolioContent = {
       id: "tools",
       labelKey: "skills.group.tools",
       items: [
+        "Claude Code",
+        "Codex",
         "Git / GitHub",
         "VS Code",
         "Roboflow",
